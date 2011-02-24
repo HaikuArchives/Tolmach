@@ -39,7 +39,7 @@ SRCS=TolmachApp.cpp\
 
 #	specify the resource files to use
 #	full path or a relative path to the resource file can be used.
-RSRCS= Tolmach.rsrc
+RDEFS= Tolmach.rdef
 
 # @<-src@ 
 #%}
@@ -56,7 +56,7 @@ RSRCS= Tolmach.rsrc
 #		naming scheme you need to specify the path to the library
 #		and it's name
 #		library: my_lib.a entry: my_lib.a or path/my_lib.a
-LIBS= root be textencoding
+LIBS= root be textencoding locale localestub stdc++
 
 #	specify additional paths to directories following the standard
 #	libXXX.so or libXXX.a naming scheme.  You can specify full paths
