@@ -16,6 +16,8 @@ NAME=Tolmach
 #	DRIVER: Kernel Driver
 TYPE=APP
 
+APP_MIME_SIG=x-vnd.Zyozik-Tolmach
+
 #	add support for new Pe and Eddie features
 #	to fill in generic makefile
 
@@ -40,6 +42,9 @@ SRCS=TolmachApp.cpp\
 #	specify the resource files to use
 #	full path or a relative path to the resource file can be used.
 RDEFS= Tolmach.rdef
+
+
+LOCALES=be ru en uk
 
 # @<-src@ 
 #%}
