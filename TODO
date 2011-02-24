@@ -1,0 +1,6 @@
+1. Splitter between words list and translation window
+2. Work with command-line arguments and received refs.
+   Auto-install of dictionaries
+3. More useful work from keyboard
+4. Memory leaks.
+5. highlight of words in translation window.

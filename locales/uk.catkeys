@@ -1,0 +1,29 @@
+1	ukrainian	x.vnd-Zyozik-Tolmach	2465702605
+About Tolmach...	Tolmach		About Tolmach...
+Initializing words. Please wait...	PGBHandler		Initializing words. Please wait...
+About...	TolmachWindow		About...
+<no dictionaries>	TolmachWindow		<no dictionaries>
+Dictionaries directory was not found	Tolmach		Dictionaries directory was not found
+Error	PGBHandler		Error
+Close	TolmachWindow		Close
+Fill in words list. Please wait ...	PGBHandler		Fill in words list. Please wait ...
+Tolmach	TolmachWindow		Tolmach
+Error reading PGB index	PGBIndex		Error reading PGB index
+Error	PGBIndex		Error
+\nDictionary:	PGBHandler		\nDictionary:
+Warning	TolmachWindow		Warning
+Word(s):	TolmachView		Word(s):
+Quit	TolmachWindow		Quit
+\n\nstatus is: (	Tolmach		\n\nstatus is: (
+ failed to load. :(	PGBHandler		 failed to load. :(
+Dictionaries	TolmachWindow		Dictionaries
+Dictionary loading failed.	PGBHandler		Dictionary loading failed.
+The file \"%filePath\" you are trying to open is not in right place. Unfortunately, current versions cannot works with dictionary bases that are not in default dictionary folder. Put the dictionaries you want to use or make links on them in \n\n%dictPath\n\n folder. Thank you for patience!	Tolmach		The file \"%filePath\" you are trying to open is not in right place. Unfortunately, current versions cannot works with dictionary bases that are not in default dictionary folder. Put the dictionaries you want to use or make links on them in \n\n%dictPath\n\n folder. Thank you for patience!
+No dictionaries available. =-(	TolmachWindow		No dictionaries available. =-(
+Stattuz	TolmachWindow		Stattuz
+Loading words	PGBHandler		Loading words
+OK	Tolmach		OK
+Digged out for BeOS \n\tin November 2003-January 2004 by %theName.\n\nThis application is distributed under the terms of General Public License. Look in sources for more details.	Tolmach		Digged out for BeOS \n\tin November 2003-January 2004 by %theName.\n\nThis application is distributed under the terms of General Public License. Look in sources for more details.
+Error	Tolmach		Error
+ words )	PGBHandler		 words )
+Unfortunately, it is not possible to close dictionary windows until finishing of initialization.	TolmachWindow		Unfortunately, it is not possible to close dictionary windows until finishing of initialization.

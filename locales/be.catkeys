@@ -1,0 +1,29 @@
+1	belarusian	x.vnd-Zyozik-Tolmach	2465702605
+About Tolmach...	Tolmach		Пра Праграму...
+Initializing words. Please wait...	PGBHandler		Ініцыялізацыя спіса слоў. Калі ласка пачакайце...
+About...	TolmachWindow		Пра Праграму...
+<no dictionaries>	TolmachWindow		<няма слоўнікаў>
+Dictionaries directory was not found	Tolmach		Каталёг са слоўнікамі ня знойдзены
+Error	PGBHandler		Памылка
+Close	TolmachWindow		Закрыць
+Fill in words list. Please wait ...	PGBHandler		Запаўненне спісу тэрмінаў. Калі ласка пачакайце...
+Tolmach	TolmachWindow		Перакладчык
+Error reading PGB index	PGBIndex		Памылка чытання PGB індэксу
+Error	PGBIndex		Памылка
+\nDictionary:	PGBHandler		\nСлоўнік:
+Warning	TolmachWindow		Папярэджанне
+Word(s):	TolmachView		Тэрмін(ы):
+Quit	TolmachWindow		Выйсці
+\n\nstatus is: (	Tolmach		\n\nстатус: (
+ failed to load. :(	PGBHandler		 немагчыма загрузіць. :(
+Dictionaries	TolmachWindow		Слоўнікі
+Dictionary loading failed.	PGBHandler		Загрузка слоўніка не ўдалася.
+The file \"%filePath\" you are trying to open is not in right place. Unfortunately, current versions cannot works with dictionary bases that are not in default dictionary folder. Put the dictionaries you want to use or make links on them in \n\n%dictPath\n\n folder. Thank you for patience!	Tolmach		Файл слоўніка \"%filePath\" які вы спрабуеце загрузіць знаходзіцца ў няправільным месцы. Нажаль гэтая версія не можа працаваць са слоўнікамі, што не знаходзяцца ў дырэкторыі па змоўчанню. Перасунце файлы слоўнікаў ці зрабіце на іх спасылкі ў дырэкторыю \n\n%dictPath\n\n. Дзякуем за разуменне!
+No dictionaries available. =-(	TolmachWindow		Няма падыходзячых слоўнікаў. =-(
+Stattuz	TolmachWindow		Статус
+Loading words	PGBHandler		Загрузка тэрмінаў
+OK	Tolmach		Так
+Digged out for BeOS \n\tin November 2003-January 2004 by %theName.\n\nThis application is distributed under the terms of General Public License. Look in sources for more details.	Tolmach		Быў адаптаваны для аперацыйнай сістэмы BeOS \n\tу Лістападзе 2003-Студзені 2004 спадаром %theName.\n\nГэтая праграма распаўсюджваецца пад патрабаванні General Public License. Больш падрабязней глядзіце ў зыходны код.
+Error	Tolmach		Памлыка
+ words )	PGBHandler		 тэрмінаў )
+Unfortunately, it is not possible to close dictionary windows until finishing of initialization.	TolmachWindow		Нажаль немагчыма закрыць вакно гэтага слоўнікя пакуль не скончылася яго ініцыялізацыя.

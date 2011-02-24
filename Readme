@@ -1,0 +1,25 @@
+                         
+
+                        Some words about Tolmach
+
+
+This program is a BeOS port of KDictionary translation program for Linux by Ivan V. Murasko. It follows the main concept of original linux program but mainly is a real BeOS program. All user interface was written in native BeOS API. The dictionary handling code was also re-factored and slightly adapted for needs of new user interface. Look into kdictionary sources and complemental materials for details on dictionaries, format and etc.
+
+There is no documentation. All you need to know is in sources. The user interface of program is simple and dosn't require any explains.
+
+Installation
+1) Create directory /boot/apps/Tolmach
+2) Create directory /boot/apps/Tolmach/Dictionaries
+3) Copy Tolmach executable to /boot/apps/Tolmach
+4) Copy *.pgb files to /boot/apps/Tolmach/Dictionaries 
+5) Copy sources in any place you like ... =-)
+6) You can use any dictionary in Polyglossum II format (*.PGB) with this program - just copy it to Dictionaries directory and restart Tolmach. 
+7) Run Tolmach by click on its icon.
+
+Copy contents of Tolmach subdirectory to /boot/apps/. To install additional dictionaries - just copy the files in Dictionaries sub-directory.   
+
+This program is distributed under terms of General Public License.
+
+Enjoy!!!
+
+25.01.2004        Zyozik
