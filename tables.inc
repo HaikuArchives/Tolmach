@@ -1,5 +1,5 @@
 struct TransLetter{
-  char *pstr;
+  const char *pstr;
   int   len;
 }engLetters[]={
   { /*0x20*/ " ", 0 },

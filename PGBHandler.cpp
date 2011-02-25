@@ -328,7 +328,7 @@ PGBHandler::AdditionalWordFast(int adress)
   BString b;
   b = "";
   bool type=false;
-  //Прохождение по дереву и нахождение текста
+  //п÷я─п╬я┘п╬п╤п╢п╣п╫п╦п╣ п©п╬ п╢п╣я─п╣п╡я┐ п╦ п╫п╟я┘п╬п╤п╢п╣п╫п╦п╣ я┌п╣п╨я│я┌п╟
   unsigned short t;
   int j=0;
   unsigned char masElement;
@@ -336,7 +336,7 @@ PGBHandler::AdditionalWordFast(int adress)
 
   if (number>0){
     for (int i=0; i<number; i++){
-      //Установка в root
+      //пёя│я┌п╟п╫п╬п╡п╨п╟ п╡ root
       t = m_aTree[ 2 * m_usNL - 2];
       do{
         if (j>=8){
@@ -344,12 +344,12 @@ PGBHandler::AdditionalWordFast(int adress)
           masElement=*(mas);
           j=0;
         }
-        //Проход по дереву
+        //п÷я─п╬я┘п╬п╢ п©п╬ п╢п╣я─п╣п╡я┐
         t = m_aTree[2 * (t - m_usNL) - 1 - (masElement&1)] ;
         j++;
         masElement>>=1;
       }while (t > m_usNL);
-       //Проверка
+       //п÷я─п╬п╡п╣я─п╨п╟
       switch(m_aTreeLett[t-1]){
          // ,
         case 44: {i=number; break;}
@@ -366,7 +366,7 @@ PGBHandler::AdditionalWordFast(int adress)
         //;
         case 59: {i=number; break;}
         case 187: {i=number; break;}
-        //Проверка рус.-анг.
+        //п÷я─п╬п╡п╣я─п╨п╟ я─я┐я│.-п╟п╫пЁ.
         case 127:{
           t=m_aTree[2 * m_usNL - 2];
           do{
@@ -375,7 +375,7 @@ PGBHandler::AdditionalWordFast(int adress)
               masElement=*(mas);
               j=0;
             }
-            //Проход по дереву
+            //п÷я─п╬я┘п╬п╢ п©п╬ п╢п╣я─п╣п╡я┐
             t=m_aTree[2*(t-m_usNL)-1-(masElement&1)] ;
             j++;
             masElement>>=1;
@@ -424,14 +424,14 @@ PGBHandler::Word(const int& adress,
 
   int resultTmp=0;
 
-  //Прохождение по дереву и нахождение текста
+  //п÷я─п╬я┘п╬п╤п╢п╣п╫п╦п╣ п©п╬ п╢п╣я─п╣п╡я┐ п╦ п╫п╟я┘п╬п╤п╢п╣п╫п╦п╣ я┌п╣п╨я│я┌п╟
   unsigned short t;
   int j = 0;
   unsigned char masElement;
   masElement=*mas;
   if (number>0){
     for (int i = 0; i < lastLett; i++){
-      //Установка в root
+      //пёя│я┌п╟п╫п╬п╡п╨п╟ п╡ root
       t = m_aTree[2 * m_usNL - 2];
       do{
         if (j >= 8){
@@ -439,16 +439,16 @@ PGBHandler::Word(const int& adress,
           masElement = *(mas);
           j=0;
         }
-        //Проход по дереву
+        //п÷я─п╬я┘п╬п╢ п©п╬ п╢п╣я─п╣п╡я┐
         t = m_aTree[2 * ( t - m_usNL) - 1 - (masElement&1)] ;
         j++;
         masElement>>=1;
       }while (t > m_usNL);
-       //Проверка
+       //п÷я─п╬п╡п╣я─п╨п╟
       switch(m_aTreeLett[t-1]){
-         //Проверка ~
+         //п÷я─п╬п╡п╣я─п╨п╟ ~
         case 254:{
-           //переход к другой статье по адресу addr;
+           //п©п╣я─п╣я┘п╬п╢ п╨ п╢я─я┐пЁп╬п╧ я│я┌п╟я┌я▄п╣ п©п╬ п╟п╢я─п╣я│я┐ addr;
           if ((i>=firstLett-1)&&(result<0)){
             result=resultTmp;
             addStr=AdditionalWordFast(addr);
@@ -469,7 +469,7 @@ PGBHandler::Word(const int& adress,
           }
           break;
         }
-        //Проверка рус.-анг.
+        //п÷я─п╬п╡п╣я─п╨п╟ я─я┐я│.-п╟п╫пЁ.
         case 127:{
           t = m_aTree[ 2 * m_usNL - 2];
           do{
@@ -478,7 +478,7 @@ PGBHandler::Word(const int& adress,
               masElement=*(mas);
               j=0;
             }
-            //Проход по дереву
+            //п÷я─п╬я┘п╬п╢ п©п╬ п╢п╣я─п╣п╡я┐
             t = m_aTree[ 2 * (t - m_usNL) - 1 - (masElement&1)] ;
             j++;
             masElement>>=1;
@@ -492,7 +492,7 @@ PGBHandler::Word(const int& adress,
       }
     }
   }else{
-    //Мы имеем дело с простым переводом
+    //п°я▀ п╦п╪п╣п╣п╪ п╢п╣п╩п╬ я│ п©я─п╬я│я┌я▀п╪ п©п╣я─п╣п╡п╬п╢п╬п╪
     for (int j = firstLett; j <= lastLett; j++){
       bStr += mas[j-1];
     }
@@ -512,7 +512,7 @@ PGBHandler::WordHighlighted()
   unsigned char num = 0;
   BString currentWord, s;
 
-  //Очистка содержимого перевода
+  //п·я┤п╦я│я┌п╨п╟ я│п╬п╢п╣я─п╤п╦п╪п╬пЁп╬ п©п╣я─п╣п╡п╬п╢п╟
   //data->translation->clear();
   BTextView *pTransView = m_pOuterWin->m_pTolmachView->m_pTransView;
   pTransView->Delete(0, pTransView->TextLength());
@@ -573,11 +573,11 @@ printf("init BH:bold:%d,hight:%d\n",numBold, numHight);
   int indexI=0;
   int lineI=1;
   int k=0;
-  //Теперь собственно сам перевод
+  //п╒п╣п©п╣я─я▄ я│п╬п╠я│я┌п╡п╣п╫п╫п╬ я│п╟п╪ п©п╣я─п╣п╡п╬п╢
   BString sTmp;
   for (int i=0; i<GetIndexNumber(); i++){
     if (m_pPGBIndex->GetWord(i)==temp){
-      //Проверка: не новое ли слово?
+      //п÷я─п╬п╡п╣я─п╨п╟: п╫п╣ п╫п╬п╡п╬п╣ п╩п╦ я│п╩п╬п╡п╬?
       m_fileDict.Seek(abs(m_pPGBIndex->GetTranslation(i)), SEEK_SET);
       m_fileDict.Read(&num, sizeof(num));
       m_fileDict.Seek(num, SEEK_CUR);
@@ -606,7 +606,7 @@ printf("init BH:bold:%d,hight:%d\n",numBold, numHight);
                      m_pPGBIndex->GetFirstLetter(i),
                      m_pPGBIndex->GetLastLetter(i),indexI,lineI);
       }
-      //Вставка строки
+      //п▓я│я┌п╟п╡п╨п╟ я│я┌я─п╬п╨п╦
       //data->translation->insertLine(s);
       pTransView->Insert(s.String());
       pTransView->Insert("\n");
@@ -635,22 +635,22 @@ PGBHandler::AdditionalWord(int adress)
 
   BString b;
   bool type=false;
-  //Прохождение по дереву и нахождение текста
+  //п÷я─п╬я┘п╬п╤п╢п╣п╫п╦п╣ п©п╬ п╢п╣я─п╣п╡я┐ п╦ п╫п╟я┘п╬п╤п╢п╣п╫п╦п╣ я┌п╣п╨я│я┌п╟
   unsigned short t;
   int j=0;
 
   if (number>0){
     for (int i=0; i<number; i++){
-      //Установка в root
+      //пёя│я┌п╟п╫п╬п╡п╨п╟ п╡ root
       t = m_aTree[2 * m_usNL - 2 ];
       do{
         k=j/8;
-        //Проход по дереву
+        //п÷я─п╬я┘п╬п╢ п©п╬ п╢п╣я─п╣п╡я┐
         t=m_aTree[2*(t-m_usNL)-1-(mas[k]&1)] ;
         j++;
         mas[k]>>=1;
       }while (t > m_usNL);
-       //Проверка
+       //п÷я─п╬п╡п╣я─п╨п╟
       switch(m_aTreeLett[t-1]){
          // ,
         case 44: {i=number; break;}
@@ -667,12 +667,12 @@ PGBHandler::AdditionalWord(int adress)
         //;
         case 59: {i=number; break;}
         case 187: {i=number; break;}
-        //Проверка рус.-анг.
+        //п÷я─п╬п╡п╣я─п╨п╟ я─я┐я│.-п╟п╫пЁ.
         case 127:{
           t=m_aTree[2 * m_usNL - 2];
           do{
             k=j/8;
-            //Проход по дереву
+            //п÷я─п╬я┘п╬п╢ п©п╬ п╢п╣я─п╣п╡я┐
             t = m_aTree[2 * (t- m_usNL)-1-(mas[k]&1)] ;
             j++;
             mas[k]>>=1;
@@ -717,7 +717,7 @@ PGBHandler::Translate(int adress, int firstLett, int lastLett,
 
   BString b;
   
-  //Прохождение по дереву и нахождение текста
+  //п÷я─п╬я┘п╬п╤п╢п╣п╫п╦п╣ п©п╬ п╢п╣я─п╣п╡я┐ п╦ п╫п╟я┘п╬п╤п╢п╣п╫п╦п╣ я┌п╣п╨я│я┌п╟
   unsigned short t;
   int j=0;
   int x1,x2;
@@ -726,16 +726,16 @@ PGBHandler::Translate(int adress, int firstLett, int lastLett,
 
   if (number>0){
     for (int i=0; i<number; i++){
-      //Установка в root
+      //пёя│я┌п╟п╫п╬п╡п╨п╟ п╡ root
       t=m_aTree[2*m_usNL-2];
       do{
         k=j/8;
-        //Проход по дереву
+        //п÷я─п╬я┘п╬п╢ п©п╬ п╢п╣я─п╣п╡я┐
         t=m_aTree[2*(t-m_usNL)-1-(mas[k]&1)] ;
         j++;
         mas[k]>>=1;
       } while (t>m_usNL);
-      //Проверка рус./англ.
+      //п÷я─п╬п╡п╣я─п╨п╟ я─я┐я│./п╟п╫пЁп╩.
       if (m_aTreeLett[t-1]==0x7F){
         t=m_aTree[2*m_usNL-2];
         do{
@@ -759,7 +759,7 @@ PGBHandler::Translate(int adress, int firstLett, int lastLett,
       }
     }
   }else{
-    //Мы имеем дело с простым переводом
+    //п°я▀ п╦п╪п╣п╣п╪ п╢п╣п╩п╬ я│ п©я─п╬я│я┌я▀п╪ п©п╣я─п╣п╡п╬п╢п╬п╪
     int i=0;
     for (int j=0; j<length-1; j++){
        if (mas[i]==127){
@@ -867,7 +867,7 @@ PGBHandler::ConvertWordInput(const char *pStr)
 void
 PGBHandler::WordListInvoked()
 {
-  //Показывает полную словарную статью
+  //п÷п╬п╨п╟п╥я▀п╡п╟п╣я┌ п©п╬п╩п╫я┐я▌ я│п╩п╬п╡п╟я─п╫я┐я▌ я│я┌п╟я┌я▄я▌
   int j=0;
   int temp=0;
   unsigned char num;
@@ -912,7 +912,7 @@ PGBHandler::WordListInvoked()
       }
     }
   bb=-1;
-  //Формирования массива с основными адресами
+  //п╓п╬я─п╪п╦я─п╬п╡п╟п╫п╦я▐ п╪п╟я│я│п╦п╡п╟ я│ п╬я│п╫п╬п╡п╫я▀п╪п╦ п╟п╢я─п╣я│п╟п╪п╦
   int* addrMas=new int [numBold];
   int intTmp;
   intTmp=0;
@@ -940,7 +940,7 @@ PGBHandler::WordListInvoked()
 
   int lineI=0;
   int k=0;
-  //Теперь собственно сам полный перевод
+  //п╒п╣п©п╣я─я▄ я│п╬п╠я│я┌п╡п╣п╫п╫п╬ я│п╟п╪ п©п╬п╩п╫я▀п╧ п©п╣я─п╣п╡п╬п╢
   BString sTmp;
   m_fileDict.Seek(m_nTransAddr, SEEK_SET);
   int trAdd;
@@ -999,22 +999,22 @@ PGBHandler::Translate(int adress)
   int k=1;
 
   BString b;
-  //Прохождение по дереву и нахождение текста
+  //п÷я─п╬я┘п╬п╤п╢п╣п╫п╦п╣ п©п╬ п╢п╣я─п╣п╡я┐ п╦ п╫п╟я┘п╬п╤п╢п╣п╫п╦п╣ я┌п╣п╨я│я┌п╟
   unsigned short t;
   int j=0;
 
   if(number>0){
     for (int i=0; i<number; i++){
-      //Установка в root
+      //пёя│я┌п╟п╫п╬п╡п╨п╟ п╡ root
       t=m_aTree[2*m_usNL-2];
       do{
         k=j/8;
-        //Проход по дереву
+        //п÷я─п╬я┘п╬п╢ п©п╬ п╢п╣я─п╣п╡я┐
         t=m_aTree[2*(t-m_usNL)-1-(mas[k]&1)] ;
         j++;
         mas[k]>>=1;
       }while (t>m_usNL);
-      //Проверка рус./англ.
+      //п÷я─п╬п╡п╣я─п╨п╟ я─я┐я│./п╟п╫пЁп╩.
       if (m_aTreeLett[t-1]==127){
         t=m_aTree[2*m_usNL-2];
         do{
@@ -1036,7 +1036,7 @@ PGBHandler::Translate(int adress)
       }
     }
   }else{
-   //Мы имеем дело с простым переводом
+   //п°я▀ п╦п╪п╣п╣п╪ п╢п╣п╩п╬ я│ п©я─п╬я│я┌я▀п╪ п©п╣я─п╣п╡п╬п╢п╬п╪
     int i=0;
     for (int j=0; j<length-1; j++){
        if (mas[i]==127){
