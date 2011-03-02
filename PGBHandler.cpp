@@ -101,7 +101,7 @@ PGBHandler::LoadDictionary(int idx)
   DictDescription dd;
   theApp.GetDictAt(&dd, idx);
   m_pOuterWin->SetTitle(DictNameString(idx, m_bReverse).String());
-  SetStatusText("Initialize...");
+  SetStatusText(B_TRANSLATE("Initialize"B_UTF8_ELLIPSIS));
   try{
     status_t status = m_fileDict.SetTo(dd.path.Path(), B_READ_ONLY);
     if(B_OK != status)
@@ -514,8 +514,10 @@ PGBHandler::WordHighlighted()
 
   //Очистка содержимого перевода
   //data->translation->clear();
+  TolmachView* pTolmachView = m_pOuterWin->m_pTolmachView;
   BTextView *pTransView = m_pOuterWin->m_pTolmachView->m_pTransView;
   pTransView->Delete(0, pTransView->TextLength());
+  pTolmachView->ResetStyleArray();
 
   //data->translation->setReadOnly(false);
 
@@ -557,16 +559,21 @@ PGBHandler::WordHighlighted()
       }
     }
   bb=bbTmp2;
+
 //ZZ:init style massives  
 //  data->translation->setNumberHight(numHight);
 //  data->translation->setNumberBold(numBold);
+
 printf("init BH:bold:%d,hight:%d\n",numBold, numHight);
 
   s = AdditionalWord(bb);
   s += ":";
 //  data->translation->insertLine(s);
+  
   pTransView->Insert(s.String());
   pTransView->Insert("\n");
+
+  pTolmachView->AppendStyleItem(0, true);
 //ZZ
 //  data->translation->boldMas[0]=0;
   
@@ -593,7 +600,9 @@ printf("init BH:bold:%d,hight:%d\n",numBold, numHight);
         k++;
         //ZZ
         //data->translation->boldMas[k]=lineI;
+//		pBoldStyle[k] = lineI;
         printf("boldMas[%d]:%d\n",k,lineI);
+		pTolmachView->AppendStyleItem(lineI, true);
 
         lineI++;
       }
@@ -615,6 +624,8 @@ printf("init BH:bold:%d,hight:%d\n",numBold, numHight);
     }
   }
 //  data->translation->setReadOnly(true);
+  
+  pTolmachView->ApplyStyleArray();
 }
 
 BString
@@ -777,6 +788,8 @@ PGBHandler::Translate(int adress, int firstLett, int lastLett,
 //  data->translation->hightMas[indexI].x1=x1;
   //data->translation->hightMas[indexI].x2=x2;
  // data->translation->hightMas[indexI].line=lineI;
+  m_pOuterWin->m_pTolmachView->AppendStyleItem(lineI, false, x1, x2);
+  printf("hilight:%d %d-%d\n", lineI, x1, x2);
   
   return b;
 }
@@ -874,9 +887,11 @@ PGBHandler::WordListInvoked()
   BString s;
 
 //  data->translation->clear();
+  TolmachView* pTolmachView = m_pOuterWin->m_pTolmachView;
   BTextView *pTransView = m_pOuterWin->m_pTolmachView->m_pTransView;
   pTransView->Delete(0, pTransView->TextLength());
 //  data->translation->setReadOnly(false);
+  pTolmachView->ResetStyleArray();
 
 //ZZ
 //  data->translation->unloadHightMas();
@@ -964,6 +979,7 @@ PGBHandler::WordListInvoked()
             sTmp += ":";
             //data->translation->insertLine(sTmp);
             //data->translation->boldMas[k]=lineI; //ZZ
+			pTolmachView->AppendStyleItem(lineI, true);
             pTransView->Insert(sTmp.String());
             pTransView->Insert("\n");
             k++;
@@ -980,6 +996,7 @@ PGBHandler::WordListInvoked()
   }
   delete[] addrMas;
 //  data->translation->setReadOnly(true);
+  pTolmachView->ApplyStyleArray();
 }
 
 BString

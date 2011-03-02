@@ -27,7 +27,7 @@
 
 class TolmachView : public BView
 {
-/*    struct StyleItem{
+    struct StyleItem{
       bool  bBold;
       int32 line;
       int32 start;
@@ -36,7 +36,7 @@ class TolmachView : public BView
         return line < si.line;
       } 
     };
-    std::list<StyleItem> aStyleItems;*/
+    std::list<StyleItem> aStyleItems;
   public:
     BTextControl *m_pWordEdit;
     BListView *m_pWordsList;
@@ -48,9 +48,9 @@ class TolmachView : public BView
     virtual void AllAttached(void);
     virtual void FrameResized(float width, float height);
     
-/*    void InitStyleArray(); 
+    void ResetStyleArray(); 
     void AppendStyleItem(int32 line, bool bBold = true, int32 start = 0, int32 end = -1);
-    void ApplyStyleArray(); */
+    void ApplyStyleArray();
 };
 
 #endif //_TOLMACHVIEW_H_

@@ -20,6 +20,7 @@
 #include <ScrollView.h>
 #include <Catalog.h>
 #include <Locale.h>
+#include <stdio.h>
 
 #include "TolmachView.h"
 #include "Constants.h"
@@ -94,11 +95,17 @@ void TolmachView::FrameResized(float width, float height)
   m_pTransView->SetTextRect(BRect(0, 0, m_pTransView->Bounds().Width(), 0));
 }
 
-/*void TolmachView::InitStyleArray(){
+void TolmachView::ResetStyleArray()
+{
   aStyleItems.clear();
+  BFont font;
+  GetFont(&font);
+  font.SetFace(B_REGULAR_FACE);
+  m_pTransView->SetFontAndColor(0, -1, &font);
 }
 
-void TolmachView::AppendStyleItem(int32 line, bool bBold = true, int32 start = 0, int32 end = -1){
+void TolmachView::AppendStyleItem(int32 line, bool bBold, int32 start, int32 end)
+{
    StyleItem si;
    si.bBold = bBold;
    si.line = line;
@@ -107,13 +114,33 @@ void TolmachView::AppendStyleItem(int32 line, bool bBold = true, int32 start = 0
    aStyleItems.push_back(si);
 }
 
-void TolmachView::ApplyStyleArray(){
+void TolmachView::ApplyStyleArray()
+{
+  BFont fontBold;
+  GetFont(&fontBold);
+  fontBold.SetFace(B_BOLD_FACE | B_ITALIC_FACE);
+  BFont fontHiLight;
+  GetFont(&fontHiLight);
+  fontHiLight.SetFace(B_BOLD_FACE);
+
   aStyleItems.sort();
   for(std::list<StyleItem>::iterator i = aStyleItems.begin();
                                       i != aStyleItems.end(); i++){
-    int32 begin = OffsetAt(i->line);
-    if((i + 1) != aStylesArray.end())
-    int32 end = OffsetAt((i + 1)->line);
+	printf("apply0:%d %d-%d\n", i->line, i->start, i->end);
+	int32 lineStart = m_pTransView->OffsetAt(i->line);
+	int32 start = lineStart + i->start;
+	int32 end = lineStart + i->end;
+	if(i->end == -1) {
+		int32 nextLine = i->line + 1;
+		if(nextLine == m_pTransView->CountLines()) {
+			end = m_pTransView->TextLength();
+		} else {
+			end = m_pTransView->OffsetAt(nextLine) - 1;
+		}
+	}
+	
+	printf("apply1:%d %d-%d\n", lineStart, start, end);
+	m_pTransView->SetFontAndColor(start, end, (i->bBold) ? &fontBold : &fontHiLight);
   }
-}*/
+}
 
