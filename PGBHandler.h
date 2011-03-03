@@ -91,7 +91,7 @@ class PGBHandler
                                 BString &bStr/*char* b*/, BString& addStr);
     BString AdditionalWordFast(int adress);
     BString AdditionalWord(int adress);
-    BString Translate(int adress, int firstLett, int lastLett,
+    BString Translate(int adress, int& firstLett, int& lastLett,
                                   int indexI, int lineI);
     BString Translate(int adress);
     BString ConvertWordInput(const char*);

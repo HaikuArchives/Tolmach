@@ -43,6 +43,6 @@ const char *const cszLargeIconResName = "BEOS:L:application/x-Polyglossum-II-bas
 const char *const cszMiniIconResName = "BEOS:M:application/x-Polyglossum-II-base";
 
 const char *const cszLoadCurDictMsgItem = "cur_dict";
-const char *const cszDictionariesDir    = "Dictionaries";
+const char *const cszDictionariesDir    = "Tolmach";
 
 #endif //_CONSTANTS_H_

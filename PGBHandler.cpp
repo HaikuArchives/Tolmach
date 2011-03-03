@@ -573,7 +573,7 @@ printf("init BH:bold:%d,hight:%d\n",numBold, numHight);
   pTransView->Insert(s.String());
   pTransView->Insert("\n");
 
-  pTolmachView->AppendStyleItem(0, true);
+  pTolmachView->AppendStyleItem(true, 0, s.Length());
 //ZZ
 //  data->translation->boldMas[0]=0;
   
@@ -595,6 +595,7 @@ printf("init BH:bold:%d,hight:%d\n",numBold, numHight);
         sTmp = AdditionalWord(bb);
         sTmp += ":";
         //data->translation->insertLine(sTmp);
+		pTolmachView->AppendStyleItem(true, pTransView->TextLength(), sTmp.Length());
         pTransView->Insert(sTmp.String());
         pTransView->Insert("\n");
         k++;
@@ -602,21 +603,18 @@ printf("init BH:bold:%d,hight:%d\n",numBold, numHight);
         //data->translation->boldMas[k]=lineI;
 //		pBoldStyle[k] = lineI;
         printf("boldMas[%d]:%d\n",k,lineI);
-		pTolmachView->AppendStyleItem(lineI, true);
 
         lineI++;
       }
-      if(m_pPGBIndex->GetTranslation(i)>0){
-        s=Translate(m_pPGBIndex->GetTranslation(i),
-                    m_pPGBIndex->GetFirstLetter(i),
-                    m_pPGBIndex->GetLastLetter(i),indexI,lineI);
-      }else{
-        s=Translate(-m_pPGBIndex->GetTranslation(i),
-                     m_pPGBIndex->GetFirstLetter(i),
-                     m_pPGBIndex->GetLastLetter(i),indexI,lineI);
-      }
+	  
+	  int hiStart = m_pPGBIndex->GetFirstLetter(i);
+	  int hiEnd = m_pPGBIndex->GetLastLetter(i);
+	  int address = abs(m_pPGBIndex->GetTranslation(i));
+      s = Translate(address, hiStart, hiEnd, indexI, lineI);
+      
       //Вставка строки
       //data->translation->insertLine(s);
+	  pTolmachView->AppendStyleItem(false, pTransView->TextLength() + hiStart, hiEnd - hiStart);
       pTransView->Insert(s.String());
       pTransView->Insert("\n");
       indexI++;
@@ -711,7 +709,7 @@ PGBHandler::AdditionalWord(int adress)
 }
 
 BString
-PGBHandler::Translate(int adress, int firstLett, int lastLett,
+PGBHandler::Translate(int adress, int& firstLett, int& lastLett,
                                     int indexI, int lineI)
 {
   m_fileDict.Seek(adress, SEEK_SET);
@@ -720,7 +718,7 @@ PGBHandler::Translate(int adress, int firstLett, int lastLett,
   bool rus;
   rus=false;
   m_fileDict.Read(&length, sizeof(length));
-  unsigned char *mas = new unsigned char[length-1];
+  char *mas = new char[length-1];
   m_fileDict.Read(mas, length-1);
 
   m_fileDict.Read(&number, sizeof(number));
@@ -732,22 +730,24 @@ PGBHandler::Translate(int adress, int firstLett, int lastLett,
   unsigned short t;
   int j=0;
   int x1,x2;
-  x1=-1;
+  x1=0;//-1;
   x2=0;
 
-  if (number>0){
-    for (int i=0; i<number; i++){
+  if (number > 0){
+    for (int i = 0; i < number; i++){
+
       //Установка в root
       t=m_aTree[2*m_usNL-2];
-      do{
+      do {
         k=j/8;
         //Проход по дереву
         t=m_aTree[2*(t-m_usNL)-1-(mas[k]&1)] ;
         j++;
         mas[k]>>=1;
       } while (t>m_usNL);
+
       //Проверка рус./англ.
-      if (m_aTreeLett[t-1]==0x7F){
+      if (m_aTreeLett[t-1]==0x7F) {
         t=m_aTree[2*m_usNL-2];
         do{
           k=j/8;
@@ -759,37 +759,52 @@ PGBHandler::Translate(int adress, int firstLett, int lastLett,
         if (m_aTreeLett[t-1]==0x06) {rus=true;}
         if (m_aTreeLett[t-1]==0x07) {rus=true;}
         i++;
-      }else{
-        if (rus){
-          b += rusLetters[m_aTreeLett[t-1]-1].pstr;
-        }else{
-          b += engLetters[m_aTreeLett[t-1]-1].pstr;
-        }
-        if (i<firstLett) x1++;
-        if (i<lastLett) x2++;
+
+      } else {
+        TransLetter& rLetter = (rus) ? rusLetters[m_aTreeLett[t-1]-1]
+									 : engLetters[m_aTreeLett[t-1]-1];
+        if(i < firstLett)
+			x1 = b.Length();
+        if(i <= lastLett)
+			x2 = b.Length();
+		b += rLetter.pstr;
+        //if (i<firstLett) x1 += rLetter.len;
+        //if (i<lastLett) x2 += rLetter.len;
       }
     }
-  }else{
+    if(lastLett == number)
+		x2 = b.Length();
+  } else {
     //Мы имеем дело с простым переводом
     int i=0;
-    for (int j=0; j<length-1; j++){
-       if (mas[i]==127){
-         i=i++;
-       }else {
+    for (int j = 0; j < length-1; j++){
+       if (mas[i] == 127){
+         i = i++;
+       } else {
+         if(i < firstLett)
+		   x1 = b.Length();
+         if(i <= lastLett)
+		   x2 = b.Length();
+
          b += mas[i];
-         if (i<firstLett) x1++;
-         if (i<lastLett) x2++;
+		 //int len = strlen(&mas[i]);
+         //if (i < firstLett) x1 += len;
+         //if (i < lastLett) x2 += len;
        }
        i++;
     }
+    if(lastLett == length - 1)
+		x2 = b.Length();
   }
   delete[] mas;
 
 //  data->translation->hightMas[indexI].x1=x1;
   //data->translation->hightMas[indexI].x2=x2;
  // data->translation->hightMas[indexI].line=lineI;
-  m_pOuterWin->m_pTolmachView->AppendStyleItem(lineI, false, x1, x2);
-  printf("hilight:%d %d-%d\n", lineI, x1, x2);
+  firstLett = x1; 
+  lastLett = x2; 
+//  m_pOuterWin->m_pTolmachView->AppendStyleItem(lineI, false, x1, x2);
+//  printf("hilight:%d %d-%d\n", lineI, x1, x2);
   
   return b;
 }
@@ -979,7 +994,7 @@ PGBHandler::WordListInvoked()
             sTmp += ":";
             //data->translation->insertLine(sTmp);
             //data->translation->boldMas[k]=lineI; //ZZ
-			pTolmachView->AppendStyleItem(lineI, true);
+			pTolmachView->AppendStyleItem(true, pTransView->TextLength(), sTmp.Length());
             pTransView->Insert(sTmp.String());
             pTransView->Insert("\n");
             k++;

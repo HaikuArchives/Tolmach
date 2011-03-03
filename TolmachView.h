@@ -29,12 +29,8 @@ class TolmachView : public BView
 {
     struct StyleItem{
       bool  bBold;
-      int32 line;
       int32 start;
       int32 end;
-      bool operator < (StyleItem &si){
-        return line < si.line;
-      } 
     };
     std::list<StyleItem> aStyleItems;
   public:
@@ -49,7 +45,7 @@ class TolmachView : public BView
     virtual void FrameResized(float width, float height);
     
     void ResetStyleArray(); 
-    void AppendStyleItem(int32 line, bool bBold = true, int32 start = 0, int32 end = -1);
+    void AppendStyleItem(bool bBold, int32 start, int32 length);
     void ApplyStyleArray();
 };
 

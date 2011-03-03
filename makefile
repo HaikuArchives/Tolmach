@@ -83,7 +83,7 @@ LOCAL_INCLUDE_PATHS =
 
 #	specify the level of optimization that you desire
 #	NONE, SOME, FULL
-OPTIMIZE= FULL
+OPTIMIZE= NONE
 
 #	specify any preprocessor symbols to be defined.  The symbols will not
 #	have their values set automatically; you must supply the value (if any)
@@ -106,13 +106,15 @@ SYMBOLS = TRUE
 #	specify debug settings
 #	if TRUE will allow application to be run from a source-level
 #	debugger.  Note that this will disable all optimzation.
-#DEBUGGER = TRUE
+DEBUGGER = TRUE
 
 #	specify additional compiler flags for all files
 COMPILER_FLAGS =
 
 #	specify additional linker flags
 LINKER_FLAGS =
+
+INSTALL_DIR = /boot/apps
 
 #	specify the version of this particular item
 #	(for example, -app 3 4 0 d 0 -short 340 -long "340 "`echo -n -e '\302\251'`"1999 GNU GPL") 

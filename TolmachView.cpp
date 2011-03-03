@@ -18,8 +18,10 @@
 #include <StringView.h>
 #include <Box.h>
 #include <ScrollView.h>
+#include <SplitView.h>
 #include <Catalog.h>
 #include <Locale.h>
+#include <LayoutBuilder.h>
 #include <stdio.h>
 
 #include "TolmachView.h"
@@ -54,6 +56,7 @@ void TolmachView::AllAttached(void)
   m_pWordEdit->SetModificationMessage(new BMessage(MSG_EDIT_CHANGE));
   float fWordHeight = m_pWordEdit->Bounds().Height();
   m_pWordEdit->ResizeTo(cfWordsWidth, fWordHeight);
+
     //words list view
   rect.Set(0, 0, cfWordsWidth - B_V_SCROLL_BAR_WIDTH, cfWordsHeight);  
   m_pWordsList = new BListView(rect, "WordsList");
@@ -62,6 +65,7 @@ void TolmachView::AllAttached(void)
                   new BScrollView("ScrollWords", m_pWordsList,
                                      B_FOLLOW_NONE, 0, false, true);
   AddChild(m_pWordsListScrollView);
+
   m_pWordsList->SetSelectionMessage(new BMessage(MSG_LIST_CHANGE));
   m_pWordsList->SetInvocationMessage(new BMessage(MSG_LIST_INVOKE));
     //translation text view
@@ -78,7 +82,13 @@ void TolmachView::AllAttached(void)
   ResizeTo(cfWordsWidth + cfHorzSpace * 2,
              cfTransHeight + fWordHeight + cfWordsHeight +
                     B_H_SCROLL_BAR_HEIGHT + cfVertSpace * 4);
-             
+/*
+  BSplitView* splitView = new BSplitView(B_HORIZONTAL);
+  BLayoutBuilder::Split<>(splitView)
+				.Add(m_pWordsListScrollView)
+				.Add(pTransScrollView);
+  AddChild(splitView);
+ */ 
   m_pWordEdit->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP);
   m_pWordsListScrollView->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP_BOTTOM);
   m_pWordsList->SetResizingMode(B_FOLLOW_ALL);
@@ -104,13 +114,12 @@ void TolmachView::ResetStyleArray()
   m_pTransView->SetFontAndColor(0, -1, &font);
 }
 
-void TolmachView::AppendStyleItem(int32 line, bool bBold, int32 start, int32 end)
+void TolmachView::AppendStyleItem(bool bBold, int32 start, int32 off)
 {
    StyleItem si;
    si.bBold = bBold;
-   si.line = line;
    si.start = start;
-   si.end = end;
+   si.end = start + off;
    aStyleItems.push_back(si);
 }
 
@@ -122,11 +131,13 @@ void TolmachView::ApplyStyleArray()
   BFont fontHiLight;
   GetFont(&fontHiLight);
   fontHiLight.SetFace(B_BOLD_FACE);
+  rgb_color rgbBold = make_color(0, 0, 128);
+  rgb_color rgbHiLight = make_color(0, 128, 0);
 
-  aStyleItems.sort();
+  //aStyleItems.sort();
   for(std::list<StyleItem>::iterator i = aStyleItems.begin();
                                       i != aStyleItems.end(); i++){
-	printf("apply0:%d %d-%d\n", i->line, i->start, i->end);
+/*	printf("apply0:%d %d-%d\n", i->line, i->start, i->end);
 	int32 lineStart = m_pTransView->OffsetAt(i->line);
 	int32 start = lineStart + i->start;
 	int32 end = lineStart + i->end;
@@ -139,8 +150,11 @@ void TolmachView::ApplyStyleArray()
 		}
 	}
 	
-	printf("apply1:%d %d-%d\n", lineStart, start, end);
-	m_pTransView->SetFontAndColor(start, end, (i->bBold) ? &fontBold : &fontHiLight);
+	printf("apply1:%d %d-%d\n", lineStart, start, end); */
+	if (i->bBold) 
+		m_pTransView->SetFontAndColor(i->start, i->end, &fontBold, B_FONT_ALL, &rgbBold);
+	else
+		m_pTransView->SetFontAndColor(i->start, i->end, &fontHiLight, B_FONT_ALL, &rgbHiLight);
   }
 }
 

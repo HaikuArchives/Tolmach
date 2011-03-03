@@ -18,6 +18,7 @@
 #include <Alert.h>
 #include <Mime.h>
 #include <Directory.h>
+#include <FindDirectory.h>
 #include <Bitmap.h>
 #include <Resources.h>
 #include <Screen.h>
@@ -41,23 +42,8 @@
 
 TolmachApplication  theApp;
 
-//extern bool newLeakCheckingOn;
-//extern bool mallocLeakCheckingOn;
-
-
-
-
-int main(int argc, char** argv){	
-	/*BString str;
-	str << "argc:" << argc;
-	for(int i=0; i < argc; i++)
-		str << "argv[" << i << "]:" << argv[i];
-	BAlert* alert = new BAlert("", str.String(), "OK"); 
-	alert->Go(); */
-//	BCatalog cat;
-//	be_locale->GetAppCatalog(&cat);
-  //newLeakCheckingOn = true;
-  //mallocLeakCheckingOn = true;
+int main(int argc, char** argv)
+{
   theApp.Run();
   return(0);
 }
@@ -114,8 +100,16 @@ TolmachApplication::LoadWinStates()
     for_each(m_dicts.begin(), m_dicts.end(), UpdateEachMenu);
   }
 
-  if(0 == nWindowsCount)
-    ShowDictWindow(0, false); // no windows opened or no states saved ... first run?
+  if(0 == nWindowsCount) {
+	if(m_dicts.size() > 0)
+	 ShowDictWindow(0, false); // no windows opened or no states saved ... first run?
+	else {
+		/*BAlert* alert = new BAlert(B_TRANSLATE("Error"), 
+				B_TRANSLATE("No dictionaries were found."), B_TRANSLATE("Exit"));
+		alert->Go();*/
+		be_app->PostMessage(B_QUIT_REQUESTED);
+	}
+  }
 }
 
 void
@@ -224,25 +218,25 @@ TolmachApplication::ProceedCmdArguments(const BEntry *entry, int count)
 void
 TolmachApplication::RefsReceived(BMessage *msg)
 {
- /* entry_ref ref;
-  std::vector<BEntry> entries;
+  entry_ref ref;
+  std::vector<entry_ref> entries;
   int32 count = 0;
   type_code tc = 0;
   if(B_OK == msg->GetInfo("refs", &tc, &count)){
-    refs.resize(item + 1);
-    msg->FindRef("refs", item, &refs[item]);
-    item++;
-    ProceedCmdArgument(BEntry(&ref));
-  }*/
+    entries.resize(count + 1);
+    msg->FindRef((const char*)"refs", &entries[0]);
+    //item++;
+//    ProceedCmdArguments(&BEntry(entries[0]), 1);
+  }
 }
 
 void
 TolmachApplication::ArgvReceived(int32 argc, char **argv)
 {
-/*  for(int i = 1; i < argc; i++){
+  for(int i = 1; i < argc; i++){
     BEntry entry(argv[i]);
-    ProceedCmdArguments(entry);
-  }*/
+    ProceedCmdArguments(&entry, 1);
+  }
 }
 
 void TolmachApplication::AboutRequested(void)
@@ -267,7 +261,7 @@ void TolmachApplication::AboutRequested(void)
         " Look in sources for more details.");
 	str.ReplaceAll("%theName", "Zyozik (WNTK)");
   }
-  ShowAlert(B_TRANSLATE("About Tolmach..."), str.String());
+  ShowAlert(B_TRANSLATE("About Tolmach"B_UTF8_ELLIPSIS), str.String());
 }
 
 void
@@ -384,13 +378,16 @@ TolmachApplication::DictCount() const
 void
 TolmachApplication::LoadDictList()
 {
-  BPath pathDicts(m_Preferences.m_pathCurrent);
+//  BPath pathDicts(m_Preferences.m_pathCurrent);
+  BPath pathDicts;
+  find_directory(B_COMMON_DATA_DIRECTORY, &pathDicts);
   pathDicts.Append(cszDictionariesDir);
   BDirectory dir(pathDicts.Path());
   BEntry entry;
   if(B_OK != dir.InitCheck()){
-    theApp.ShowAlert(B_TRANSLATE("Error"),
-			B_TRANSLATE("Dictionaries directory was not found"), B_STOP_ALERT);
+    BString strMessage(B_TRANSLATE("Dictionaries directory '%dictsDir%' doesn't exists."));
+	strMessage.ReplaceFirst("%dictsDir%", pathDicts.Path());
+	theApp.ShowAlert(B_TRANSLATE("Error"), strMessage.String(), B_STOP_ALERT);
     return;
   }
   while(B_ENTRY_NOT_FOUND != dir.GetNextEntry(&entry)){
