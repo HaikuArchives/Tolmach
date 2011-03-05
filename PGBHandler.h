@@ -47,23 +47,43 @@ class PGBHandler
       int GetNumberWords();
       void FindNext(int &j);
   } *m_pPGBIndex;
+
+  struct PGBHeader {
+    int32 m_nIndexAddressOrg;
+    int32 m_nWordsAddressOrg;
+    int32 m_nIndexNumberOrg;
+    int32 m_nIndexAddressDest;
+    int32 m_nWordsAddressDest;
+    int32 m_nIndexNumberDest;
+    int32 m_nTransAddr;
+    int16 m_sNumberLett;
+    int16 m_sReserved1;
+	uint8 m_aReserved2[64];
+	int32 m_nReserved3;
+	int32 m_nMagic;
+	int32 m_nReserved4;
+	int16 m_sReserved5;
+	uint8 m_aConvLett[255];
+
+	PGBHeader() { memset(this, 0, sizeof(PGBHeader)); }
+  } m_Header;
       
     BFile m_fileDict;
-    int m_nIndexAddressOrg;
-    int m_nIndexAddressDest;
+    //int m_nIndexAddressOrg;
+    //int m_nIndexAddressDest;
     int GetIndexAddress();
         
-    int m_nWordsAddressOrg;
-    int m_nWordsAddressDest;
+    //int m_nWordsAddressOrg;
+    //int m_nWordsAddressDest;
     int GetWordsAddress();
         
-    int m_nIndexNumberOrg;
-    int m_nIndexNumberDest;
+    //int m_nIndexNumberOrg;
+    //int m_nIndexNumberDest;
     int GetIndexNumber();
         
-    int m_nTransAddr;
+    //int m_nTransAddr;
         
-    short m_sNumberLett;
+    //short m_sNumberLett;
     int   m_nNumberWords;
     unsigned short m_usNL;
     //std::vector<unsigned char> m_aTree;
@@ -71,7 +91,7 @@ class PGBHandler
     //std::vector<unsigned char> m_aTreeLett;
     unsigned char *m_aTreeLett;
     //std::vector<char> m_aConvLett;
-    char *m_aConvLett;
+ //   char *m_aConvLett;
         
     //std::vector<char> m_aWords;
     char *m_aWords;

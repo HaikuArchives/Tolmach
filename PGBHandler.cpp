@@ -36,15 +36,15 @@
 #include "tables.inc" // encode tables
 
 PGBHandler::PGBHandler(TolmachWindow *pOuterWin)
-                         :m_pOuterWin(pOuterWin), m_nCurrent(-1),
+                         :m_pOuterWin(pOuterWin), m_nCurrent(-1)/*,
                           m_nIndexAddressOrg(0),
                           m_nIndexAddressDest(0), m_nWordsAddressOrg(0),
                           m_nWordsAddressDest(0), m_nIndexNumberOrg(0),
                           m_nIndexNumberDest(0), m_nTransAddr(0),
-                          m_sNumberLett(0), m_bReverse(false),
+                          m_sNumberLett(0)*/, m_bReverse(false),
                           m_usNL(0), m_pPGBIndex(0),
                           m_nNumberWords(0),m_aTree(0),m_aTreeLett(0),m_aWords(0),
-                          m_aConvLett(0),m_aTranslation(0)
+                          /*m_aConvLett(0),*/m_aTranslation(0)
 {
 }
 
@@ -107,6 +107,7 @@ PGBHandler::LoadDictionary(int idx)
     if(B_OK != status)
       throw status;
       //read header variables 
+/*	  
     int size = sizeof(int);  
     if(size != (status = m_fileDict.Read(&m_nIndexAddressOrg, size)))
       throw status;
@@ -125,13 +126,20 @@ PGBHandler::LoadDictionary(int idx)
     size = sizeof(short);
     if(size != (status = m_fileDict.Read(&m_sNumberLett, size)))
       throw status;
-      //read conv letters array
-    size = 255;
-    //m_aConvLett.resize(size);
-    m_aConvLett = new char[size];
-    if(size != (status = m_fileDict.ReadAt(0x6e, &m_aConvLett[0], size)))
+*/
+    int size = sizeof(PGBHeader);
+    if(size != (status = m_fileDict.Read(&m_Header, size)))
       throw status;
-    m_usNL = (m_sNumberLett + 1) / 2; // ??? optimize?
+
+
+      //read conv letters array
+//    size = 255;
+    //m_aConvLett.resize(size);
+	//XXX
+    //m_aConvLett = new char[size];
+    //if(size != (status = m_fileDict.ReadAt(0x6e, &m_aConvLett[0], size)))
+    //  throw status;
+    m_usNL = (m_Header.m_sNumberLett + 1) / 2; // ??? optimize?
       // tree lett
     //m_aTreeLett.resize(m_usNL);
     m_aTreeLett = new unsigned char[m_usNL];
@@ -155,6 +163,9 @@ PGBHandler::LoadDictionary(int idx)
     }
     m_aTree[2 * m_usNL - 2] = 2 * m_usNL - 1;
     
+	//BString bb = Translate(0x20);
+//	printf("%s\n", bb.String());
+
     LoadWords();
     
     m_pOuterWin->LockLooper();
@@ -245,8 +256,9 @@ PGBHandler::LoadWords()
     BString bStr;
     int insrt;
     //m_aTranslation.resize(m_nWordsAddressOrg); //??? optimize?
-    m_aTranslation = new unsigned char[m_nWordsAddressOrg];
-    m_fileDict.ReadAt(0, /*&m_aTranslation[0]*/m_aTranslation, m_nWordsAddressOrg); // error check!!!
+    m_aTranslation = new unsigned char[m_Header.m_nWordsAddressOrg];
+//XXX naxrena povtorno chitAT'?	
+    m_fileDict.ReadAt(0, /*&m_aTranslation[0]*/m_aTranslation, m_Header.m_nWordsAddressOrg); // error check!!!
     
     BList List(m_nNumberWords);
     for (int i = 0; i < m_nNumberWords; i++){
@@ -296,19 +308,19 @@ PGBHandler::UnloadWords()
 int
 PGBHandler::GetIndexAddress()
 {
-  return m_bReverse ? m_nIndexAddressDest : m_nIndexAddressOrg;
+  return m_bReverse ? m_Header.m_nIndexAddressDest : m_Header.m_nIndexAddressOrg;
 }
 
 int
 PGBHandler::GetWordsAddress()
 {
-  return m_bReverse ? m_nWordsAddressDest : m_nWordsAddressOrg;
+  return m_bReverse ? m_Header.m_nWordsAddressDest : m_Header.m_nWordsAddressOrg;
 }
         
 int
 PGBHandler::GetIndexNumber()
 {
-  return m_bReverse ? m_nIndexNumberDest : m_nIndexNumberOrg;
+  return m_bReverse ? m_Header.m_nIndexNumberDest : m_Header.m_nIndexNumberOrg;
 }
 
 BString
@@ -886,7 +898,7 @@ PGBHandler::ConvertWordInput(const char *pStr)
   convert_from_utf8(B_MS_DOS_866_CONVERSION, sOrg.String(), &srcLen,
                                            dest, &destLen, &state);
   for(int i = 0; i < destLen; i++){
-    dest[i]=m_aConvLett[(unsigned char)dest[i]];
+    dest[i]=m_Header.m_aConvLett[(unsigned char)dest[i]];
   }
   sDest.UnlockBuffer(destLen);
   return sDest;
@@ -972,11 +984,11 @@ PGBHandler::WordListInvoked()
   int k=0;
   //Теперь собственно сам полный перевод
   BString sTmp;
-  m_fileDict.Seek(m_nTransAddr, SEEK_SET);
+  m_fileDict.Seek(m_Header.m_nTransAddr, SEEK_SET);
   int trAdd;
   int savePosition;
 
-  while (m_fileDict.Position() < m_nWordsAddressOrg - 1){
+  while (m_fileDict.Position() < m_Header.m_nWordsAddressOrg - 1){
       trAdd = m_fileDict.Position();
       m_fileDict.Read(&num, sizeof(num));
       m_fileDict.Seek(num, SEEK_CUR);
