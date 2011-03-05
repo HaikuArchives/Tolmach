@@ -1,6 +1,6 @@
 struct TransLetter{
   const char *pstr;
-  int   len;
+  int   length;
 }engLetters[]={
   { /*0x20*/ " ", 0 },
   { /*0x2D*/ "-", 0 },
@@ -520,14 +520,17 @@ TransLetter rusLetters[]= {
   { 0, 0 }, //terminator
   { 0, 0 }, //terminator
 };
-
-struct TransLettersInitializator{
-  TransLettersInitializator(TransLetter *ptable){
+/*
+struct TransLettersInitializator
+{
+  TransLettersInitializator(TransLetter *ptable)
+  {
     for(TransLetter *tl = ptable; tl->pstr != 0; tl++){
-      tl->len = strlen(tl->pstr);
+      tl->length = strlen(tl->pstr);
     }   
   }
 };
 
 TransLettersInitializator tli_eng(engLetters); 
 TransLettersInitializator tli_rus(rusLetters);
+*/

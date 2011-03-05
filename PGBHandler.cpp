@@ -36,15 +36,10 @@
 #include "tables.inc" // encode tables
 
 PGBHandler::PGBHandler(TolmachWindow *pOuterWin)
-                         :m_pOuterWin(pOuterWin), m_nCurrent(-1)/*,
-                          m_nIndexAddressOrg(0),
-                          m_nIndexAddressDest(0), m_nWordsAddressOrg(0),
-                          m_nWordsAddressDest(0), m_nIndexNumberOrg(0),
-                          m_nIndexNumberDest(0), m_nTransAddr(0),
-                          m_sNumberLett(0)*/, m_bReverse(false),
-                          m_usNL(0), m_pPGBIndex(0),
-                          m_nNumberWords(0),m_aTree(0),m_aTreeLett(0),m_aWords(0),
-                          /*m_aConvLett(0),*/m_aTranslation(0)
+                         :m_pOuterWin(pOuterWin), m_nCurrent(-1),
+						 m_bReverse(false), m_usNL(0), m_pPGBIndex(0),
+                         m_nNumberWords(0), m_aTree(0), m_aTreeLett(0),
+						 m_aWords(0), m_aTranslation(0)
 {
 }
 
@@ -106,40 +101,12 @@ PGBHandler::LoadDictionary(int idx)
     status_t status = m_fileDict.SetTo(dd.path.Path(), B_READ_ONLY);
     if(B_OK != status)
       throw status;
-      //read header variables 
-/*	  
-    int size = sizeof(int);  
-    if(size != (status = m_fileDict.Read(&m_nIndexAddressOrg, size)))
-      throw status;
-    if(size != (status = m_fileDict.Read(&m_nWordsAddressOrg, size)))
-      throw status;
-    if(size != (status = m_fileDict.Read(&m_nIndexNumberOrg, size)))
-      throw status;
-    if(size != (status = m_fileDict.Read(&m_nIndexAddressDest, size)))
-      throw status;
-    if(size != (status = m_fileDict.Read(&m_nWordsAddressDest, size)))
-      throw status;
-    if(size != (status = m_fileDict.Read(&m_nIndexNumberDest, size)))
-      throw status;
-    if(size != (status = m_fileDict.Read(&m_nTransAddr, size)))
-      throw status;
-    size = sizeof(short);
-    if(size != (status = m_fileDict.Read(&m_sNumberLett, size)))
-      throw status;
-*/
+    //read header variables 
     int size = sizeof(PGBHeader);
     if(size != (status = m_fileDict.Read(&m_Header, size)))
       throw status;
-
-
-      //read conv letters array
-//    size = 255;
-    //m_aConvLett.resize(size);
-	//XXX
-    //m_aConvLett = new char[size];
-    //if(size != (status = m_fileDict.ReadAt(0x6e, &m_aConvLett[0], size)))
-    //  throw status;
-    m_usNL = (m_Header.m_sNumberLett + 1) / 2; // ??? optimize?
+    
+	m_usNL = (m_Header.m_sNumberLett + 1) / 2; // ??? optimize?
       // tree lett
     //m_aTreeLett.resize(m_usNL);
     m_aTreeLett = new unsigned char[m_usNL];
@@ -163,9 +130,6 @@ PGBHandler::LoadDictionary(int idx)
     }
     m_aTree[2 * m_usNL - 2] = 2 * m_usNL - 1;
     
-	//BString bb = Translate(0x20);
-//	printf("%s\n", bb.String());
-
     LoadWords();
     
     m_pOuterWin->LockLooper();
@@ -257,8 +221,8 @@ PGBHandler::LoadWords()
     int insrt;
     //m_aTranslation.resize(m_nWordsAddressOrg); //??? optimize?
     m_aTranslation = new unsigned char[m_Header.m_nWordsAddressOrg];
-//XXX naxrena povtorno chitAT'?	
-    m_fileDict.ReadAt(0, /*&m_aTranslation[0]*/m_aTranslation, m_Header.m_nWordsAddressOrg); // error check!!!
+
+	m_fileDict.ReadAt(0, /*&m_aTranslation[0]*/m_aTranslation, m_Header.m_nWordsAddressOrg); // error check!!!
     
     BList List(m_nNumberWords);
     for (int i = 0; i < m_nNumberWords; i++){
@@ -524,19 +488,11 @@ PGBHandler::WordHighlighted()
   unsigned char num = 0;
   BString currentWord, s;
 
-  //Очистка содержимого перевода
-  //data->translation->clear();
   TolmachView* pTolmachView = m_pOuterWin->m_pTolmachView;
   BTextView *pTransView = m_pOuterWin->m_pTolmachView->m_pTransView;
   pTransView->Delete(0, pTransView->TextLength());
   pTolmachView->ResetStyleArray();
 
-  //data->translation->setReadOnly(false);
-
-  //ZZ: free style massives
-  //data->translation->unloadHightMas();
-  //data->translation->unloadBoldMas();
-  
   int cur_idx = m_pOuterWin->m_pTolmachView->m_pWordsList->CurrentSelection();
   for (int i=0; i < cur_idx; i++)
      m_pPGBIndex->FindNext(j);
@@ -572,11 +528,8 @@ PGBHandler::WordHighlighted()
     }
   bb=bbTmp2;
 
-//ZZ:init style massives  
 //  data->translation->setNumberHight(numHight);
 //  data->translation->setNumberBold(numBold);
-
-printf("init BH:bold:%d,hight:%d\n",numBold, numHight);
 
   s = AdditionalWord(bb);
   s += ":";
@@ -633,7 +586,6 @@ printf("init BH:bold:%d,hight:%d\n",numBold, numHight);
       lineI++;
     }
   }
-//  data->translation->setReadOnly(true);
   
   pTolmachView->ApplyStyleArray();
 }
@@ -780,8 +732,6 @@ PGBHandler::Translate(int adress, int& firstLett, int& lastLett,
         if(i <= lastLett)
 			x2 = b.Length();
 		b += rLetter.pstr;
-        //if (i<firstLett) x1 += rLetter.len;
-        //if (i<lastLett) x2 += rLetter.len;
       }
     }
     if(lastLett == number)
@@ -799,9 +749,6 @@ PGBHandler::Translate(int adress, int& firstLett, int& lastLett,
 		   x2 = b.Length();
 
          b += mas[i];
-		 //int len = strlen(&mas[i]);
-         //if (i < firstLett) x1 += len;
-         //if (i < lastLett) x2 += len;
        }
        i++;
     }
@@ -815,8 +762,6 @@ PGBHandler::Translate(int adress, int& firstLett, int& lastLett,
  // data->translation->hightMas[indexI].line=lineI;
   firstLett = x1; 
   lastLett = x2; 
-//  m_pOuterWin->m_pTolmachView->AppendStyleItem(lineI, false, x1, x2);
-//  printf("hilight:%d %d-%d\n", lineI, x1, x2);
   
   return b;
 }

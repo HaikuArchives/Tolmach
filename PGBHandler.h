@@ -69,21 +69,12 @@ class PGBHandler
   } m_Header;
       
     BFile m_fileDict;
-    //int m_nIndexAddressOrg;
-    //int m_nIndexAddressDest;
     int GetIndexAddress();
         
-    //int m_nWordsAddressOrg;
-    //int m_nWordsAddressDest;
     int GetWordsAddress();
         
-    //int m_nIndexNumberOrg;
-    //int m_nIndexNumberDest;
     int GetIndexNumber();
         
-    //int m_nTransAddr;
-        
-    //short m_sNumberLett;
     int   m_nNumberWords;
     unsigned short m_usNL;
     //std::vector<unsigned char> m_aTree;
@@ -91,7 +82,6 @@ class PGBHandler
     //std::vector<unsigned char> m_aTreeLett;
     unsigned char *m_aTreeLett;
     //std::vector<char> m_aConvLett;
- //   char *m_aConvLett;
         
     //std::vector<char> m_aWords;
     char *m_aWords;
