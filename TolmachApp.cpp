@@ -209,6 +209,7 @@ TolmachApplication::ProceedCmdArguments(std::vector<entry_ref>& entries)
     BPath path(&*i);
 	BEntry entry(&*i);
 	DictIterator d = m_dicts.begin();
+	bool bOk = true;
     for (; d != m_dicts.end(); d++) {
       if(d->path == path) {
 		ShowDictWindow(d - m_dicts.begin(), false);
@@ -220,10 +221,13 @@ TolmachApplication::ProceedCmdArguments(std::vector<entry_ref>& entries)
 		ShowDictWindow(idx, false);
 		break;
 	  }
-	  
-	  BAlert* alert = new BAlert(B_TRANSLATE("Error"),
-			  B_TRANSLATE("File %file% cannot be loaded."),
-			  B_TRANSLATE("OK"));
+	  bOk = false;
+	}
+
+	if(!bOk) {
+	  BString str(B_TRANSLATE("File '%file%' cannot be loaded."));
+	  str.ReplaceFirst("%file%", path.Path());
+	  BAlert* alert = new BAlert(B_TRANSLATE("Error"), str.String(), B_TRANSLATE("OK"));
 	  alert->Go();
     }
   }
@@ -270,23 +274,37 @@ void TolmachApplication::AboutRequested(void)
   BString str("Tolmach");
   BResources *pResources = AppResources();
   size_t size = 0;
+  int headerLen = 0;
   const void *pVersionData = pResources->LoadResource('APPV', 1, &size); 
   if(pVersionData){
     const struct version_info *pVI = (const struct version_info *)pVersionData;
     str = pVI->short_info;
-    str << " ( version " << pVI->major << "."
-                          << pVI->middle << "."
-                          << pVI->minor << "."
-                          << szVVs[pVI->variety] << "-"
-                          << pVI->internal << ")\n\n";
-    str << pVI->long_info << "\n\n";
+	headerLen = str.Length();
+	str << "\n\n" << pVI->long_info << "\n";
+
+    str << B_TRANSLATE("version");
+   	str << " " << pVI->major << "." << pVI->middle << "." << pVI->minor
+		<< "." << szVVs[pVI->variety] << "-" << pVI->internal << "\n\n";
                           
-    str << B_TRANSLATE("Digged out for BeOS \n\tin November 2003-January 2004 by %theName.\n\n"
-        "This application is distributed under the terms of General Public License."
-        " Look in sources for more details.");
-	str.ReplaceAll("%theName", "Zyozik (WNTK)");
+    str << B_TRANSLATE("Based on 'KDictionary' project.\n");
+    str << B_TRANSLATE("Digged out for BeOS:\tNov.2003-Jan.2004.\n");
+    str << B_TRANSLATE("Renewed for Haiku:\tFeb.2011-Mar.2011.\n\n");
+    str << B_TRANSLATE("This application is distributed under the terms of "
+			"General Public License. Look in sources for more details.\n");
   }
-  ShowAlert(B_TRANSLATE("About Tolmach"B_UTF8_ELLIPSIS), str.String());
+
+  BAlert* alert = new BAlert(B_TRANSLATE("About Tolmach"B_UTF8_ELLIPSIS),
+		  str.String(), B_TRANSLATE("OK"));
+
+  BTextView *view = alert->TextView();
+  BFont font;
+  view->SetStylable(true);
+  view->GetFont(&font);
+  font.SetSize(font.Size() * 1.5);
+  font.SetFace(B_BOLD_FACE);
+  view->SetFontAndColor(0, headerLen, &font);
+
+  alert->Go();
 }
 
 void
