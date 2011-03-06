@@ -91,9 +91,10 @@ class TolmachApplication : public BApplication
  
     void OffsetNextBounds(TolmachWindow *pLatestWin);
     static void UpdateEachMenu(DictDescription &dd);
-    void ProceedCmdArguments(const BEntry *entry, int count);
+    void ProceedCmdArguments(std::vector<entry_ref>& entries);
 
     void LoadDictList();
+	int  LoadDictFile(BEntry& entry);
     void UpdateMIMETypes();
     void LoadWinStates();
   public:

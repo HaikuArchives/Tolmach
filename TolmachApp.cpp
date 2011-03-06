@@ -25,6 +25,7 @@
 #include <fs_attr.h>
 #include <AppFileInfo.h>
 #include <KernelExport.h>
+#include <sys/stat.h>
 
 #include <Catalog.h>
 #include <Locale.h>
@@ -84,7 +85,17 @@ TolmachApplication::UpdateEachMenu(DictDescription &dd)
 void
 TolmachApplication::LoadWinStates()
 {
-  int nWindowsCount = 0;
+  // in case some dicts were already opened as result of RefsReceived
+  std::vector<TolmachWindow*> wins;
+  for(DictIterator i = m_dicts.begin(); i != m_dicts.end(); i++){
+    for(int j = 0; j < eCountLng; j++){
+      if(0 != i->wins[j]){
+		wins.push_back(i->wins[j]);
+      }
+    }
+  }  
+
+  int nWindowsCount = wins.size();
   if(0 != m_Preferences.m_states.size()){
     Preferences::StateIterator s = m_Preferences.m_states.begin();
     for(; s != m_Preferences.m_states.end(); s++){
@@ -102,13 +113,15 @@ TolmachApplication::LoadWinStates()
 
   if(0 == nWindowsCount) {
 	if(m_dicts.size() > 0)
-	 ShowDictWindow(0, false); // no windows opened or no states saved ... first run?
+	  ShowDictWindow(0, false); // no windows opened or no states saved ... first run?
 	else {
-		/*BAlert* alert = new BAlert(B_TRANSLATE("Error"), 
-				B_TRANSLATE("No dictionaries were found."), B_TRANSLATE("Exit"));
-		alert->Go();*/
-		be_app->PostMessage(B_QUIT_REQUESTED);
+	  be_app->PostMessage(B_QUIT_REQUESTED);
 	}
+  } else
+  if (wins.size() > 0) {
+	std::vector<TolmachWindow*>::iterator i = wins.begin();
+	for (; i != wins.end(); i++)
+	  (*i)->Activate(true);
   }
 }
 
@@ -187,31 +200,32 @@ TolmachApplication::WindowCloseRequested(int nDict, bool bReverse)
 }
 
 void
-TolmachApplication::ProceedCmdArguments(const BEntry *entry, int count)
+TolmachApplication::ProceedCmdArguments(std::vector<entry_ref>& entries)
 {
-  BPath path(entry);
-  DictIterator d = m_dicts.begin(); 
-  for(;d != m_dicts.end(); d++){
-    if(d->path == path)
-      break;
-  }
-  if(d != m_dicts.end()){
-    
-  }else{
-    BPath pathDicts(m_Preferences.m_pathCurrent);
-    pathDicts.Append(cszDictionariesDir);
-    BString str;
-    str << B_TRANSLATE("The file \"%filePath\" you are trying to open is not in right place. "
-        "Unfortunately, current versions cannot works with dictionary bases that are not in "
-        "default dictionary folder. Put the dictionaries you want to use or make links on them "
-        "in \n\n%dictPath\n\n folder. Thank you for patience!");
-
-	str.ReplaceAll("%filePath", path.Path());
-	str.ReplaceAll("%dictPath", pathDicts.Path());
-
-    theApp.ShowAlert(B_TRANSLATE("Error"), str.String(), B_WARNING_ALERT);
-    /*if(m_statusInit == B_NO_INIT)
-      m_statusInit = B_ERROR;*/
+  if (entries.size() <= 0)
+    return;
+  
+  for (std::vector<entry_ref>::iterator i = entries.begin(); i != entries.end(); i++) {
+    BPath path(&*i);
+	BEntry entry(&*i);
+	DictIterator d = m_dicts.begin();
+    for (; d != m_dicts.end(); d++) {
+      if(d->path == path) {
+		ShowDictWindow(d - m_dicts.begin(), false);
+        break;
+	  }
+      
+	  int idx = LoadDictFile(entry);
+	  if (idx >= 0) {
+		ShowDictWindow(idx, false);
+		break;
+	  }
+	  
+	  BAlert* alert = new BAlert(B_TRANSLATE("Error"),
+			  B_TRANSLATE("File %file% cannot be loaded."),
+			  B_TRANSLATE("OK"));
+	  alert->Go();
+    }
   }
 }
 
@@ -223,20 +237,31 @@ TolmachApplication::RefsReceived(BMessage *msg)
   int32 count = 0;
   type_code tc = 0;
   if(B_OK == msg->GetInfo("refs", &tc, &count)){
-    entries.resize(count + 1);
-    msg->FindRef((const char*)"refs", &entries[0]);
-    //item++;
-//    ProceedCmdArguments(&BEntry(entries[0]), 1);
+    entries.resize(count);
+	for(int32 i = 0; i < count; i++) {
+	  msg->FindRef((const char*)"refs", i, &entries[i]);
+	}
+
+    ProceedCmdArguments(entries);
   }
 }
 
 void
 TolmachApplication::ArgvReceived(int32 argc, char **argv)
 {
+  std::vector<entry_ref> entries;
   for(int i = 1; i < argc; i++){
-    BEntry entry(argv[i]);
-    ProceedCmdArguments(&entry, 1);
+	entry_ref ref;
+	status_t st = get_ref_for_path(argv[i], &ref);
+	if(st == B_OK) {
+	  entries.push_back(ref);
+	} else
+	  fprintf(stderr, B_TRANSLATE("File %s cannot be processed as dictionary file.\n%s\n"),
+						argv[i], strerror(st));
   }
+
+  if(entries.size() > 0)
+	  ProceedCmdArguments(entries);
 }
 
 void TolmachApplication::AboutRequested(void)
@@ -391,39 +416,48 @@ TolmachApplication::LoadDictList()
     return;
   }
   while(B_ENTRY_NOT_FOUND != dir.GetNextEntry(&entry)){
-    char name[B_FILE_NAME_LENGTH]; 
-    entry.GetName(name);
-    if(0 == strcasecmp(name + strlen(name) - strlen(cszPGBExt), cszPGBExt)){
-      DictDescription dict;
-      BPath path;
-      entry.GetPath(&path);
-      dict.path = path.Path();
-      dict.name = path.Leaf(); //init for non-attributed bases
-      BNode node(&entry);
-      char attr_name[B_ATTR_NAME_LENGTH];
-      while(B_ENTRY_NOT_FOUND != node.GetNextAttrName(attr_name)){
-        attr_info ai;
-        node.GetAttrInfo(attr_name, &ai);
-        BString *pstr = 0;
-        if(0 == strcmp(attr_name, cszAttrDescr)){
-          pstr = &dict.name;
-        }else
-        if(0 == strcmp(attr_name, cszAttrOLang)){
-          pstr = &dict.langs[eOLng];
-        }else
-        if(0 == strcmp(attr_name, cszAttrDLang)){
-          pstr = &dict.langs[eDLng];
-        }
-        if(pstr){
-          char *pbuf = new char[ai.size + 1];
-          node.ReadAttr(attr_name, ai.type, 0, pbuf, ai.size);
-          pbuf[ai.size] = 0;
-          pstr->SetTo(pbuf);
-        }
-      }
-      m_dicts.push_back(dict);
-    }
+	LoadDictFile(entry);
   }
+}
+
+int
+TolmachApplication::LoadDictFile(BEntry& entry)
+{
+  char name[B_FILE_NAME_LENGTH]; 
+  entry.GetName(name);
+  if(0 == strcasecmp(name + strlen(name) - strlen(cszPGBExt), cszPGBExt)){
+    DictDescription dict;
+    BPath path;
+    entry.GetPath(&path);
+    dict.path = path.Path();
+    dict.name = path.Leaf(); //init for non-attributed bases
+    BNode node(&entry);
+    char attr_name[B_ATTR_NAME_LENGTH];
+    while(B_ENTRY_NOT_FOUND != node.GetNextAttrName(attr_name)){
+      attr_info ai;
+      node.GetAttrInfo(attr_name, &ai);
+      BString *pstr = 0;
+      if(0 == strcmp(attr_name, cszAttrDescr)){
+        pstr = &dict.name;
+      }else
+      if(0 == strcmp(attr_name, cszAttrOLang)){
+        pstr = &dict.langs[eOLng];
+      }else
+      if(0 == strcmp(attr_name, cszAttrDLang)){
+        pstr = &dict.langs[eDLng];
+      }
+      if(pstr){
+        char *pbuf = new char[ai.size + 1];
+        node.ReadAttr(attr_name, ai.type, 0, pbuf, ai.size);
+        pbuf[ai.size] = 0;
+        pstr->SetTo(pbuf);
+      }
+    }
+    m_dicts.push_back(dict);
+	return m_dicts.size() - 1;
+  }
+
+  return -1;
 }
 
 /*
