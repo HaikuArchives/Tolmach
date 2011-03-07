@@ -2,10 +2,11 @@
  * PGBHandler.cpp
  *
  * This file is a part of Tolmach project - the port of KDictionary
- * for BeOS.
+ * for BeOS/Haiku.
  *
  * copyright: (C) 1999 by Ivan V. Murasko
  *            (C) 2003-2004 by Zyozik (BeOS-related parts)
+ *            (C) 2011 by Zyozik (Renewed for Haiku)
  */
 /***************************************************************************
  *                                                                         *

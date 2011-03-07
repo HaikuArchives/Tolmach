@@ -2,10 +2,11 @@
  * Constants.h
  *
  * This file is a part of Tolmach project - the port of KDictionary
- * for BeOS.
+ * for BeOS/Haiku.
  *
  * copyright: (C) 1999 by Ivan V. Murasko
  *            (C) 2003-2004 by Zyozik (BeOS-related parts)
+ *            (C) 2011 by Zyozik (Renewed for Haiku)
  */
 /***************************************************************************
  *                                                                         *
@@ -32,7 +33,7 @@ const int32 MSG_CMD_UPDATE_DICT_MENU = 'UPDM';
 const rgb_color BKG_GREY = { 216, 216, 216, 0 };
 
 const char *const cszApplicationSignature = "application/x-vnd.Zyozik-Tolmach";
-const char *const cszDictionaryMimeType = "application/x-Polyglossum-II-base";
+const char *const cszDictionaryMimeType = "application/x-vnd.ETS-PolyglossumII-base";
 const char *const cszAttrDescr = "TDict:Descr";
 const char *const cszAttrOLang = "TDict:OLang";
 const char *const cszAttrDLang = "TDict:DLang";
