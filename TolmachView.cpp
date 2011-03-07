@@ -45,15 +45,14 @@ TolmachView::TolmachView(uint32 resizingMode)
               m_pWordEdit(0), m_pWordsList(0), m_pTransView(0),
               m_pWordsListScrollView(0)
 {
-  SetViewColor(BKG_GREY);
+  SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
 }
 
 void TolmachView::AllAttached(void)
 {
     //word edit control
   BRect rect(cfHorzSpace, cfVertSpace, cfWordsWidth, 0);
-  m_pWordEdit = new BTextControl(rect, "WordEdit", B_TRANSLATE("Word(s):"), "",
-                                 0, B_FOLLOW_NONE);
+  m_pWordEdit = new TextControl(*this, rect);
   AddChild(m_pWordEdit);
   m_pWordEdit->ResizeToPreferred();
   m_pWordEdit->SetModificationMessage(new BMessage(MSG_EDIT_CHANGE));
@@ -159,5 +158,117 @@ void TolmachView::ApplyStyleArray()
 	else
 		m_pTransView->SetFontAndColor(i->start, i->end, &fontHiLight, B_FONT_ALL, &rgbHiLight);
   }
+}
+
+void
+TolmachView::SetSelectWordInListWatchDog(bool on)
+{
+  m_bSelectWordInListWatchDog = on;
+}
+
+void
+TolmachView::SelectWordInList(int index)
+{
+  if (!m_bSelectWordInListWatchDog) {
+    m_pWordsList->Select(index);
+    m_pWordsList->ScrollToSelection();
+  } else
+	m_bSelectWordInListWatchDog = false;
+}
+
+TolmachView::TextControl::TextControl(TolmachView& rView, BRect& rect)
+						: 
+						BTextControl(rect, "WordEdit",
+							B_TRANSLATE("Word(s):"), "", 0, B_FOLLOW_NONE),
+						m_rView(rView)
+{
+}
+
+
+void
+TolmachView::TextControl::MessageReceived(BMessage *message)
+{
+/*	fprintf(stderr, "what %d\n", message->what);
+	if(message->what != B_KEY_DOWN) {
+		BTextControl::MessageReceived(message);
+		return;
+	}
+
+	int32 nKey = 0;
+	status_t st = message->FindInt32("raw_char", &nKey);
+	if (B_OK != st) {
+		fprintf(stderr, "raw_char field not found: %s\n", strerror(st));
+		return;
+	}
+	
+	fprintf(stderr, "what %d\n", message->what);
+
+//    BListView *pWordsList = m_pTolmachView->m_pWordsList;
+//    BTextControl *pWordEdit = m_pTolmachView->m_pWordEdit;
+	int min = 0;
+	int idx = m_rView.m_pWordsList->CurrentSelection();
+	int max = m_rView.m_pWordsList->CountItems() - 1;
+	fprintf(stderr, "%d: %d : %d\n", min, idx, max);
+	switch (nKey) {
+		case B_UP_ARROW:
+			idx--;
+			break;
+		case B_DOWN_ARROW:
+			idx++;
+			break;
+		case B_HOME:
+			idx = min;
+			break;
+		case B_END:
+			idx = max;
+			break;
+		case B_PAGE_UP:
+		case B_PAGE_DOWN:
+			{
+				BScrollBar *pScrollBar = m_rView.m_pWordsListScrollView->ScrollBar(B_VERTICAL);
+				if (0 != pScrollBar) {
+					float fSmallStep = 1.0;
+					float fBigStep = 10.0;
+					pScrollBar->GetSteps(&fSmallStep, &fBigStep);
+
+					float fScrollValue = pScrollBar->Value();
+					bool bUp = (nKey == B_PAGE_UP);
+					fScrollValue += bUp ? -fBigStep : fBigStep;
+					idx = m_rView.m_pWordsList->IndexOf(BPoint(0, fScrollValue));
+					if (idx < 0) {
+						idx = bUp ? 0 : m_rView.m_pWordsList->CountItems();
+					}
+				}
+			}
+			break;
+		case B_ENTER:
+			{
+				char ch = static_cast<char>(nKey);  
+				m_rView.m_pWordsList->BListView::KeyDown(&ch, 1);
+			}
+			break;
+
+		default:
+			BTextControl::MessageReceived(message);
+			return;
+	}
+		
+	idx = max_c(min, idx);
+	idx = min_c(max, idx);
+
+	fprintf(stderr, "%d: %d : %d\n", min, idx, max);
+	
+	m_rView.m_pWordsList->Select(idx);
+	m_rView.m_pWordsList->ScrollToSelection();
+
+	idx = m_rView.m_pWordsList->CurrentSelection();
+	BStringItem *pItem = static_cast<BStringItem *>(m_rView.m_pWordsList->ItemAt(idx));
+	if (pItem != 0) {
+		m_rView.m_pWordEdit->SetText(pItem->Text());
+		BTextView *pView = static_cast<BTextView *>(m_rView.m_pWordEdit->ChildAt(0));
+		pView->SelectAll();
+	}
+*/
+	BTextControl::MessageReceived(message);
 }
 

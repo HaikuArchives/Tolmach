@@ -520,6 +520,19 @@ TransLetter rusLetters[]= {
   { 0, 0 }, //terminator
   { 0, 0 }, //terminator
 };
+
+struct UmlautsTable {
+  const char *pstrFrom;
+  const char *pstrTo;
+} umlautLetters[] = {
+  { "Ä", "A" },
+  { "Ü", "U" },
+  { "Ö", "O" },
+  { "ä", "a" },
+  { "ü", "u" },
+  { "ö", "o" },
+  { "ß", "ss" }
+};
 /*
 struct TransLettersInitializator
 {

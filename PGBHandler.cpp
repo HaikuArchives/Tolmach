@@ -239,8 +239,10 @@ PGBHandler::LoadWords()
         BString tmpString(bStr);
         tmpString.Insert(addStr, insrt);
         List.AddItem(new BStringItem(tmpString.String()));
+//		fprintf(stdout, "ts:%s:%d\n", tmpString.String(), tmpString.Length());
       }else{
         List.AddItem(new BStringItem(bStr.String()));
+//		fprintf(stdout, "bs:%s:%d\n", bStr.String(), bStr.Length());
       }
       if(0 == (i % (m_nNumberWords / 500 + 1)))
         SetStatusText(B_TRANSLATE("Loading words"), i*100/(m_nNumberWords));
@@ -792,6 +794,7 @@ PGBHandler::Seek(const char* s, const unsigned int& pos)
   char* word;
   int result=0;
   int compare=5;
+
   for(int i=0; i<m_nNumberWords; i++){
     pointerVoid=tmpChar;
     num=*((unsigned char*) pointerVoid);
@@ -826,13 +829,20 @@ void
 PGBHandler::WordEditChanged()
 {
   int j = 0;
-  BString strDest = ConvertWordInput(m_pOuterWin->m_pTolmachView->m_pWordEdit->Text());
+  BString strSrc(m_pOuterWin->m_pTolmachView->m_pWordEdit->Text());
+  for(int i = 0; i < sizeof(umlautLetters) / sizeof(umlautLetters[0]); i++) {
+	  strSrc.ReplaceAll(umlautLetters[i].pstrFrom, umlautLetters[i].pstrTo);
+  }
+
+  BString strDest = ConvertWordInput(strSrc);
   unsigned int nLength = strDest.Length();//strlen(pText);
   if(nLength > 0){
     j = Seek(strDest.String(), nLength);
   }
-  m_pOuterWin->m_pTolmachView->m_pWordsList->Select(j);
-  m_pOuterWin->m_pTolmachView->m_pWordsList->ScrollToSelection();
+
+  m_pOuterWin->m_pTolmachView->SelectWordInList(j);
+  /*m_pOuterWin->m_pTolmachView->m_pWordsList->Select(j);
+  m_pOuterWin->m_pTolmachView->m_pWordsList->ScrollToSelection();*/
 }
 
 BString
@@ -844,7 +854,7 @@ PGBHandler::ConvertWordInput(const char *pStr)
   int32 state = 0;
   char *dest = sDest.LockBuffer(destLen + 1);
   convert_from_utf8(B_MS_DOS_866_CONVERSION, sOrg.String(), &srcLen,
-                                           dest, &destLen, &state);
+                                        dest, &destLen, &state);
   for(int i = 0; i < destLen; i++){
     dest[i]=m_Header.m_aConvLett[(unsigned char)dest[i]];
   }

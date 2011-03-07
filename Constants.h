@@ -30,7 +30,7 @@ const int32 MSG_LIST_INVOKE = 'LTIV';
 const int32 MSG_CMD_LOAD_CURRENT_DICT = 'LCDT';
 const int32 MSG_CMD_UPDATE_DICT_MENU = 'UPDM';
 
-const rgb_color BKG_GREY = { 216, 216, 216, 0 };
+//const rgb_color BKG_GREY = { 216, 216, 216, 0 };
 
 const char *const cszApplicationSignature = "application/x-vnd.Zyozik-Tolmach";
 const char *const cszDictionaryMimeType = "application/x-vnd.ETS-PolyglossumII-base";

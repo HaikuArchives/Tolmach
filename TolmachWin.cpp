@@ -60,9 +60,10 @@ bool TolmachWindow::QuitRequested()
 			B_TRANSLATE("Unfortunately, it is not possible to close "
             "dictionary windows until finishing of initialization."), B_STOP_ALERT);
     bRet = false;
-  }else
+  } else
     theApp.WindowCloseRequested(m_nDict, m_bReverse);
-  return(bRet);
+
+  return bRet;
 }
 
 void TolmachWindow::initLayout()
@@ -93,7 +94,7 @@ void TolmachWindow::initLayout()
   statusFrame.InsetBy(2,2);	
   m_pStatusView = new BStringView(statusFrame, "Status View",
                                    B_TRANSLATE("Stattuz"), B_FOLLOW_ALL);
-  m_pStatusView->SetViewColor(BKG_GREY);
+  m_pStatusView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
   pStatusBox->AddChild(m_pStatusView);
   
   float windowWidth = m_pTolmachView->Frame().right;
@@ -107,8 +108,7 @@ void TolmachWindow::initLayout()
   SetSizeLimits(fMinW, fMaxW, fMinH, fMaxH);
   SetZoomLimits(fMinW, fMaxH);
   
-  m_pTolmachView->SetResizingMode(B_FOLLOW_TOP_BOTTOM|
-                                   B_FOLLOW_LEFT_RIGHT);
+  m_pTolmachView->SetResizingMode(B_FOLLOW_TOP_BOTTOM | B_FOLLOW_LEFT_RIGHT);
   pStatusBox->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_BOTTOM);                                 
 }
 
@@ -277,71 +277,84 @@ void TolmachWindow::MessageReceived(BMessage *message)
 void TolmachWindow::DispatchMessage(BMessage *msg, BHandler *target)
 {
   BWindow::DispatchMessage(msg, target);
- /* if(msg->what == B_KEY_DOWN){
+  if(msg->what == B_KEY_DOWN){
     if(m_pTolmachView->m_pWordEdit->ChildAt(0) == target)
       HandleWordEditKeyDown(msg);
-  }*/
+  }
 }
 
-void TolmachWindow::HandleWordEditKeyDown(BMessage *msg)
+void TolmachWindow::HandleWordEditKeyDown(BMessage *message)
 {
-  int32 nKey = 0;
-  if(B_OK == msg->FindInt32("raw_char", &nKey)){
+	int32 nKey = 0;
+	status_t st = message->FindInt32("raw_char", &nKey);
+	if (B_OK != st) {
+		fprintf(stderr, "raw_char field not found: %s\n", strerror(st));
+		return;
+	}
+	
+	fprintf(stderr, "what %d\n", message->what);
+
     BListView *pWordsList = m_pTolmachView->m_pWordsList;
     BTextControl *pWordEdit = m_pTolmachView->m_pWordEdit;
-    bool bIsNavigationKey = true;
-   // int idx = pWordsList->CurrentSelection();
-    switch(nKey){
-      case B_UP_ARROW:
-   //     idx--;
-   //     break;
-      case B_DOWN_ARROW:
-   //     idx++;
-   //     break;
-      case B_HOME:
-   //     idx = 0;
-   //     break;
-      case B_END:
-   //     idx = pWordsList->CountItems();
-   //     break;
-      case B_PAGE_UP:
-      case B_PAGE_DOWN:/*{
-          BScrollView *pWordsListScrollView = m_pTolmachView->m_pWordsListScrollView;
-          BScrollBar *pScrollBar = pWordsListScrollView->ScrollBar(B_VERTICAL);
-          if(pScrollBar){
-            float fSmallStep = 1.0;
-            float fBigStep = 10.0;
-            pScrollBar->GetSteps(&fSmallStep, &fBigStep);
-            float fScrollValue = pScrollBar->Value();
-            bool bUp = (nKey == B_PAGE_UP);
-            fScrollValue += bUp ? -fBigStep : fBigStep;
-            idx = pWordsList->IndexOf(BPoint(0, fScrollValue));
-            if(idx < 0){
-              idx = bUp ? 0 : pWordsList->CountItems();
-            }
-          }
-        }
-        break;*/
-      case B_ENTER:{
-          char ch = static_cast<char>(nKey);  
-          pWordsList->BListView::KeyDown(&ch, 1);
-        }
-        break;
-      default:
-         bIsNavigationKey = false;
-         break;   
-    }
-    if(bIsNavigationKey){
-      //pWordsList->Select(idx);
-      //pWordsList->ScrollToSelection();
-      int idx = pWordsList->CurrentSelection();
-      BStringItem *pItem = static_cast<BStringItem *>(pWordsList->ItemAt(idx));
-      if(pItem != 0){
-        pWordEdit->SetText(pItem->Text());
-        BTextView *pView = static_cast<BTextView *>(pWordEdit->ChildAt(0));
-        pView->SelectAll();
-      }
-    }  
-  }  
+	int min = 0;
+	int idx = pWordsList->CurrentSelection();
+	int max = pWordsList->CountItems() - 1;
+	fprintf(stderr, "1:%d <- %d -> %d\n", min, idx, max);
+	switch (nKey) {
+		case B_UP_ARROW:
+			idx--;
+			break;
+		case B_DOWN_ARROW:
+			idx++;
+			break;
+		case B_HOME:
+			idx = min;
+			break;
+		case B_END:
+			idx = max;
+			break;
+		case B_PAGE_UP:
+		case B_PAGE_DOWN:
+			{
+				int pageCount = pWordsList->Bounds().Height()/pWordsList->ItemFrame(0).Height();
+				idx += (nKey == B_PAGE_UP) ? -pageCount : pageCount;
+			}
+			break;
+		case B_ENTER:
+			{
+				char ch = static_cast<char>(nKey);  
+				pWordsList->BListView::KeyDown(&ch, 1);
+			}
+			break;
+
+		default:
+			//BTextControl::MessageReceived(message);
+			return;
+	}
+		
+	fprintf(stderr, "2: %d <- %d -> %d\n", min, idx, max);
+	
+	idx = max_c(min, idx);
+	idx = min_c(max, idx);
+
+	fprintf(stderr, "3: %d <- %d -> %d\n", min, idx, max);
+	
+	pWordsList->Select(idx);
+	pWordsList->ScrollToSelection();
+
+	idx = pWordsList->CurrentSelection();
+	
+	fprintf(stderr, "3: %d <- %d -> %d\n", min, idx, max);
+	
+	BStringItem *pItem = static_cast<BStringItem *>(pWordsList->ItemAt(idx));
+	if (pItem != 0) {
+		m_pTolmachView->SetSelectWordInListWatchDog(true);
+
+		pWordEdit->SetText(BString(pItem->Text()).Trim());
+
+		//m_pTolmachView->SetSelectWordInListWatchDog(false);
+	//	BTextView *pView = static_cast<BTextView *>(pWordEdit->ChildAt(0));
+	//	pView->SelectAll();
+	}
 }
 

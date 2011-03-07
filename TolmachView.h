@@ -29,26 +29,38 @@
 
 class TolmachView : public BView
 {
-    struct StyleItem{
-      bool  bBold;
-      int32 start;
-      int32 end;
+	class TextControl : public BTextControl {
+			TolmachView& m_rView;
+	public:
+					TextControl(TolmachView& rView, BRect& rect);
+    virtual	void	MessageReceived(BMessage *message);
+	};
+
+    struct  StyleItem {
+		bool  bBold;
+		int32 start;
+		int32 end;
     };
-    std::list<StyleItem> aStyleItems;
-  public:
-    BTextControl *m_pWordEdit;
-    BListView *m_pWordsList;
-    BScrollView *m_pWordsListScrollView;
-    BTextView *m_pTransView;
+
+    std::list<StyleItem>	aStyleItems;
+	bool			m_bSelectWordInListWatchDog;
 
   public:
-    TolmachView(uint32 resizing_mode);
-    virtual void AllAttached(void);
-    virtual void FrameResized(float width, float height);
+    TextControl*	m_pWordEdit;
+    BListView*		m_pWordsList;
+    BScrollView*	m_pWordsListScrollView;
+    BTextView*		m_pTransView;
+
+  public:
+					TolmachView(uint32 resizing_mode);
+    virtual	void	AllAttached(void);
+    virtual	void	FrameResized(float width, float height);
     
-    void ResetStyleArray(); 
-    void AppendStyleItem(bool bBold, int32 start, int32 length);
-    void ApplyStyleArray();
+			void	ResetStyleArray(); 
+			void	AppendStyleItem(bool bBold, int32 start, int32 length);
+			void	ApplyStyleArray();
+			void    SetSelectWordInListWatchDog(bool on);
+			void    SelectWordInList(int index);
 };
 
 #endif //_TOLMACHVIEW_H_
