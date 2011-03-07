@@ -16,9 +16,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 #ifndef _TOLMACHWIN_H_
 #define _TOLMACHWIN_H_
+
 
 #include <Window.h>
 #include <Menu.h>
@@ -56,6 +56,7 @@ class TolmachWindow : public BWindow
     virtual void MessageReceived(BMessage *message);
     virtual void DispatchMessage(BMessage *msg, BHandler *target);
 };
+
 
 #endif //_TOLMACHWIN_H_
 

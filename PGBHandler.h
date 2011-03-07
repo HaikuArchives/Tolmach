@@ -20,10 +20,11 @@
 #ifndef _PGBHANDLER_H_
 #define _PGBHANDLER_H_
 
-#include <String.h>
-#include <File.h>
 #include <cstdio>
 #include <vector>
+
+#include <File.h>
+#include <String.h>
 
 #include "TolmachView.h"
 

@@ -21,10 +21,11 @@
 #define _TOLMACHVIEW_H_
 
 #include <list>
-#include <View.h>
-#include <TextControl.h>
+
 #include <ListView.h>
+#include <TextControl.h>
 #include <TextView.h>
+#include <View.h>
 
 class TolmachView : public BView
 {

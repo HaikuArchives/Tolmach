@@ -16,9 +16,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 #ifndef _CONSTANTS_H_
 #define _CONSTANTS_H_
+
 
 const int32 MSG_CMD_DICT_NUM   = 'dICT';
 const int32 MSG_CMD_DICT_PREFS = 'dPRF';
@@ -47,3 +47,4 @@ const char *const cszLoadCurDictMsgItem = "cur_dict";
 const char *const cszDictionariesDir    = "Tolmach";
 
 #endif //_CONSTANTS_H_
+

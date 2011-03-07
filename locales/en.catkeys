@@ -1,29 +1,35 @@
-1	english	x-vnd.Zyozik-Tolmach	2465702605
-About Tolmach...	Tolmach		About Tolmach...
-Initializing words. Please wait...	PGBHandler		Initializing words. Please wait...
-About...	TolmachWindow		About...
+1	english	x-vnd.Zyozik-Tolmach	2119944699
+ failed to load. :(	PGBHandler		 failed to load. :(
+ words )	PGBHandler		 words )
 <no dictionaries>	TolmachWindow		<no dictionaries>
-Dictionaries directory was not found	Tolmach		Dictionaries directory was not found
-Error	PGBHandler		Error
+About Tolmach…	Tolmach		About Tolmach…
+About...	TolmachWindow		About...
+Based on 'KDictionary' project.\n	Tolmach		Based on 'KDictionary' project.\n
 Close	TolmachWindow		Close
-Fill in words list. Please wait ...	PGBHandler		Fill in words list. Please wait ...
-Tolmach	TolmachWindow		Tolmach
-Error reading PGB index	PGBIndex		Error reading PGB index
+Dictionaries	TolmachWindow		Dictionaries
+Dictionaries directory '%dictsDir%' doesn't exists.	Tolmach		Dictionaries directory '%dictsDir%' doesn't exists.
+Dictionary loading failed.	PGBHandler		Dictionary loading failed.
+Digged out for BeOS:\tNov.2003-Jan.2004.\n	Tolmach		Digged out for BeOS:\tNov.2003-Jan.2004.\n
+Error	PGBHandler		Error
 Error	PGBIndex		Error
-\nDictionary:	PGBHandler		\nDictionary:
+Error	Tolmach		Error
+Error reading PGB index	PGBIndex		Error reading PGB index
+File %s cannot be processed as dictionary file.\n%s\n	Tolmach		File %s cannot be processed as dictionary file.\n%s\n
+File '%file%' cannot be loaded.	Tolmach		File '%file%' cannot be loaded.
+Fill in words list. Please wait ...	PGBHandler		Fill in words list. Please wait ...
+Initialize…	PGBHandler		Initialize…
+Initializing words. Please wait...	PGBHandler		Initializing words. Please wait...
+Loading words	PGBHandler		Loading words
+No dictionaries available. =-(	TolmachWindow		No dictionaries available. =-(
+OK	Tolmach		OK
+Quit	TolmachWindow		Quit
+Renewed for Haiku:\tFeb.2011-Mar.2011.\n\n	Tolmach		Renewed for Haiku:\tFeb.2011-Mar.2011.\n\n
+Stattuz	TolmachWindow		Stattuz
+This application is distributed under the terms of General Public License. Look in sources for more details.\n	Tolmach		This application is distributed under the terms of General Public License. Look in sources for more details.\n
+Tolmach	TolmachWindow		Tolmach
+Unfortunately, it is not possible to close dictionary windows until finishing of initialization.	TolmachWindow		Unfortunately, it is not possible to close dictionary windows until finishing of initialization.
 Warning	TolmachWindow		Warning
 Word(s):	TolmachView		Word(s):
-Quit	TolmachWindow		Quit
+\nDictionary:	PGBHandler		\nDictionary:
 \n\nstatus is: (	Tolmach		\n\nstatus is: (
- failed to load. :(	PGBHandler		 failed to load. :(
-Dictionaries	TolmachWindow		Dictionaries
-Dictionary loading failed.	PGBHandler		Dictionary loading failed.
-The file \"%filePath\" you are trying to open is not in right place. Unfortunately, current versions cannot works with dictionary bases that are not in default dictionary folder. Put the dictionaries you want to use or make links on them in \n\n%dictPath\n\n folder. Thank you for patience!	Tolmach		The file \"%filePath\" you are trying to open is not in right place. Unfortunately, current versions cannot works with dictionary bases that are not in default dictionary folder. Put the dictionaries you want to use or make links on them in \n\n%dictPath\n\n folder. Thank you for patience!
-No dictionaries available. =-(	TolmachWindow		No dictionaries available. =-(
-Stattuz	TolmachWindow		Stattuz
-Loading words	PGBHandler		Loading words
-OK	Tolmach		OK
-Digged out for BeOS \n\tin November 2003-January 2004 by %theName.\n\nThis application is distributed under the terms of General Public License. Look in sources for more details.	Tolmach		Digged out for BeOS \n\tin November 2003-January 2004 by %theName.\n\nThis application is distributed under the terms of General Public License. Look in sources for more details.
-Error	Tolmach		Error
- words )	PGBHandler		 words )
-Unfortunately, it is not possible to close dictionary windows until finishing of initialization.	TolmachWindow		Unfortunately, it is not possible to close dictionary windows until finishing of initialization.
+version	Tolmach		version

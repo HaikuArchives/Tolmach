@@ -16,24 +16,26 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#include "TolmachApp.h"
+
+#include <sys/stat.h>
+
 #include <Alert.h>
-#include <Mime.h>
+#include <AppFileInfo.h>
+#include <Bitmap.h>
+#include <Catalog.h>
 #include <Directory.h>
 #include <FindDirectory.h>
-#include <Bitmap.h>
+#include <KernelExport.h>
+#include <Locale.h>
+#include <Mime.h>
 #include <Resources.h>
 #include <Screen.h>
 #include <fs_attr.h>
-#include <AppFileInfo.h>
-#include <KernelExport.h>
-#include <sys/stat.h>
 
-#include <Catalog.h>
-#include <Locale.h>
-
-#include "TolmachWin.h"
-#include "TolmachApp.h"
 #include "Constants.h"
+#include "TolmachWin.h"
 
 #define NEW_WINDOW_OFFSET_X 	20
 #define NEW_WINDOW_OFFSET_Y 	20

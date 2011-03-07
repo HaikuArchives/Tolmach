@@ -16,19 +16,21 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#include "PGBHandler.h"
+
+#include <Catalog.h>
 #include <ListView.h>
-#include <StringView.h>
-#include <TextView.h>
-#include <TextControl.h>
+#include <Locale.h>
 #include <MenuBar.h>
 #include <MenuItem.h>
+#include <StringView.h>
+#include <TextControl.h>
+#include <TextView.h>
 #include <UTF8.h>
-#include <Catalog.h>
-#include <Locale.h>
 
 #include "TolmachApp.h"
 #include "TolmachWin.h"
-#include "PGBHandler.h"
 #include "Constants.h"
 
 #undef B_TRANSLATE_CONTEXT

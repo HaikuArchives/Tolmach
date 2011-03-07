@@ -16,16 +16,18 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <StringView.h>
-#include <Box.h>
-#include <ScrollView.h>
-#include <SplitView.h>
-#include <Catalog.h>
-#include <Locale.h>
-#include <LayoutBuilder.h>
-#include <stdio.h>
 
 #include "TolmachView.h"
+
+#include <Box.h>
+#include <Catalog.h>
+#include <LayoutBuilder.h>
+#include <Locale.h>
+#include <ScrollView.h>
+#include <SplitView.h>
+#include <StringView.h>
+#include <stdio.h>
+
 #include "Constants.h"
 
 #undef B_TRANSLATE_CONTEXT

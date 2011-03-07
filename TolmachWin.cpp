@@ -16,24 +16,27 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#include "TolmachWin.h"
+
 #include <Application.h>
-#include <MenuBar.h>
-#include <MenuItem.h>
-#include <String.h>
-#include <StringView.h>
-#include <ScrollView.h>
 #include <Box.h>
-#include <scheduler.h>
 #include <Catalog.h>
 #include <Locale.h>
+#include <MenuBar.h>
+#include <MenuItem.h>
+#include <ScrollView.h>
+#include <String.h>
+#include <StringView.h>
+#include <scheduler.h>
 
 #include "TolmachApp.h"
-#include "TolmachWin.h"
 #include "TolmachView.h"
 #include "Constants.h"
 
 #undef B_TRANSLATE_CONTEXT
 #define B_TRANSLATE_CONTEXT "TolmachWindow"
+
 
 TolmachWindow::TolmachWindow(BRect frame, int nDict, bool bReverse)
                :BWindow(frame, "Tolmach", B_TITLED_WINDOW, 0),

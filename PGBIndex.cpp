@@ -16,10 +16,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "TolmachApp.h"
 #include "PGBHandler.h"
+
 #include <Catalog.h>
 #include <Locale.h>
+
+#include "TolmachApp.h"
 
 #undef B_TRANSLATE_CONTEXT
 #define B_TRANSLATE_CONTEXT "PGBIndex"

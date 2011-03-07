@@ -16,14 +16,15 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <Roster.h>
-#include <FindDirectory.h>
-#include <unistd.h>
-#include <Catalog.h>
-#include <Locale.h>
-#include <File.h>
 
 #include "TolmachApp.h"
+
+#include <Catalog.h>
+#include <File.h>
+#include <FindDirectory.h>
+#include <Locale.h>
+#include <Roster.h>
+#include <unistd.h>
 
 #undef B_TRANSLATE_CONTEXT
 #define B_TRANSLATE_CONTEXT "TolmachPreferences"

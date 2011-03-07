@@ -16,17 +16,17 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 #ifndef _TOLMACHAPP_H_
 #define _TOLMACHAPP_H_
 
-#include <Application.h>
-#include <Alert.h>
-#include <Path.h>
-#include <Flattenable.h>
-#include <String.h>
-#include <vector>
 #include <algorithm>
+#include <vector>
+
+#include <Alert.h>
+#include <Application.h>
+#include <Flattenable.h>
+#include <Path.h>
+#include <String.h>
 
 class TolmachWindow;
 
