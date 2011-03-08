@@ -43,7 +43,7 @@ class TolmachView : public BView
     };
 
     std::list<StyleItem>	aStyleItems;
-	bool			m_bSelectWordInListWatchDog;
+	bigtime_t		m_selectWordInListWatchDog;
 
   public:
     TextControl*	m_pWordEdit;
@@ -59,7 +59,8 @@ class TolmachView : public BView
 			void	ResetStyleArray(); 
 			void	AppendStyleItem(bool bBold, int32 start, int32 length);
 			void	ApplyStyleArray();
-			void    SetSelectWordInListWatchDog(bool on);
+			void    SetSelectWordInListWatchDog(bigtime_t time);
+			bigtime_t   SelectWordInListWatchDog();
 			void    SelectWordInList(int index);
 };
 

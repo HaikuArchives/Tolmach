@@ -121,7 +121,7 @@ class PGBHandler
     void SetCurrent(int idx, bool bReverse);
     int  GetCurrent();
     void WordHighlighted();
-    void WordEditChanged();
+    void WordEditChanged(BMessage* message);
     void WordListInvoked();
     void Reverse();
     bool GetReverse();

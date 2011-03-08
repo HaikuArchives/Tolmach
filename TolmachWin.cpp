@@ -240,6 +240,7 @@ void TolmachWindow::UpdateDictMenu()
 
 void TolmachWindow::MessageReceived(BMessage *message)
 {
+	int64 when = 0;
   int idx = message->what - MSG_CMD_DICT_NUM;
   if(idx >= 0 && idx < theApp.DictCount() * 2){
     theApp.ShowDictWindow(idx / 2, 0 != idx % 2);
@@ -252,7 +253,9 @@ void TolmachWindow::MessageReceived(BMessage *message)
         m_PGBHandler.WordListInvoked();
         break;
       case MSG_EDIT_CHANGE:
-        m_PGBHandler.WordEditChanged();
+		message->FindInt64("when", &when);
+		fprintf(stderr, "Edit modify message.:%lld\n", when);
+        m_PGBHandler.WordEditChanged(message);
         break;
       case MSG_CMD_QUIT_REQUESTED:
         be_app->PostMessage(B_QUIT_REQUESTED);
@@ -348,9 +351,13 @@ void TolmachWindow::HandleWordEditKeyDown(BMessage *message)
 	
 	BStringItem *pItem = static_cast<BStringItem *>(pWordsList->ItemAt(idx));
 	if (pItem != 0) {
-		m_pTolmachView->SetSelectWordInListWatchDog(true);
+	//	pWordEdit->SetText("");
+		//m_pTolmachView->SetSelectWordInListWatchDog(system_time());
 
+	fprintf(stderr, "<<%lld\n", system_time());
 		pWordEdit->SetText(BString(pItem->Text()).Trim());
+	fprintf(stderr, ">>%lld\n", system_time());
+		m_pTolmachView->SetSelectWordInListWatchDog(system_time());
 
 		//m_pTolmachView->SetSelectWordInListWatchDog(false);
 	//	BTextView *pView = static_cast<BTextView *>(pWordEdit->ChildAt(0));

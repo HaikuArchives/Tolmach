@@ -161,19 +161,29 @@ void TolmachView::ApplyStyleArray()
 }
 
 void
-TolmachView::SetSelectWordInListWatchDog(bool on)
+TolmachView::SetSelectWordInListWatchDog(bigtime_t time)
 {
-  m_bSelectWordInListWatchDog = on;
+  m_selectWordInListWatchDog = time;
 }
+
+bigtime_t
+TolmachView::SelectWordInListWatchDog()
+{
+	return m_selectWordInListWatchDog;
+}
+
 
 void
 TolmachView::SelectWordInList(int index)
 {
-  if (!m_bSelectWordInListWatchDog) {
+//  if (!m_bSelectWordInListWatchDog) {
     m_pWordsList->Select(index);
     m_pWordsList->ScrollToSelection();
-  } else
-	m_bSelectWordInListWatchDog = false;
+//	fprintf(stderr, "%d:select\n", m_bSelectWordInListWatchDog);
+ // } else {
+//	m_bSelectWordInListWatchDog = false;
+//	fprintf(stderr, "%d:disable\n", m_bSelectWordInListWatchDog);
+//  }
 }
 
 TolmachView::TextControl::TextControl(TolmachView& rView, BRect& rect)
