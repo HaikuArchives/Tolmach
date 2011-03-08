@@ -29,32 +29,36 @@
 
 class TolmachView : public BView
 {
-    struct  StyleItem {
+/*    struct  StyleItem {
 		bool  bBold;
 		int32 start;
 		int32 end;
     };
 
     std::list<StyleItem>	aStyleItems;
+*/	
 	bigtime_t		m_selectWordInListWatchDog;
+//    BScrollView*	m_pWordsListScrollView;
 
-  public:
-    BTextControl*	m_pWordEdit;
-    BListView*		m_pWordsList;
-    BScrollView*	m_pWordsListScrollView;
-    BTextView*		m_pTransView;
+//friend class TolmachWindow;
+
+//  public:
+//    BTextControl*	m_pWordEdit;
+//    BListView*		m_pWordsList;
+//    BTextView*		m_pTransView;
 
   public:
 					TolmachView(uint32 resizing_mode);
     virtual	void	AllAttached(void);
     virtual	void	FrameResized(float width, float height);
     
-			void	ResetStyleArray(); 
+/*			void	ResetStyleArray(); 
 			void	AppendStyleItem(bool bBold, int32 start, int32 length);
 			void	ApplyStyleArray();
+			*/
 			void    SetSelectWordInListWatchDog(bigtime_t time);
 			bigtime_t   SelectWordInListWatchDog();
-			void    SelectWordInList(int index);
+//			void    SelectWordInList(int index);
 };
 
 #endif //_TOLMACHVIEW_H_

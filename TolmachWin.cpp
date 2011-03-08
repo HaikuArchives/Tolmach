@@ -23,6 +23,7 @@
 #include <Box.h>
 #include <Catalog.h>
 #include <Locale.h>
+#include <LayoutBuilder.h>
 #include <MenuBar.h>
 #include <MenuItem.h>
 #include <ScrollView.h>
@@ -37,10 +38,15 @@
 #undef B_TRANSLATE_CONTEXT
 #define B_TRANSLATE_CONTEXT "TolmachWindow"
 
+const float cfVertSpace = 10.f;
+const float cfHorzSpace = 10.f;
+const float cfWordsWidth  = 400.f;
+const float cfWordsHeight  = 150.f;
+const float cfTransHeight = 170.f;
 
 TolmachWindow::TolmachWindow(BRect frame, int nDict, bool bReverse)
                :BWindow(frame, "Tolmach", B_TITLED_WINDOW, 0),
-               m_pMenuBar(0), m_pTolmachView(0), m_pProgress(0),
+               m_pMenuBar(0), /*m_pTolmachView(0),*/ m_pProgress(0),
                m_pStatusView(0), m_pDictMenu(0), m_PGBHandler(this),
                m_nDict(nDict), m_bReverse(bReverse),m_tid(-1)
 {
@@ -50,6 +56,29 @@ TolmachWindow::TolmachWindow(BRect frame, int nDict, bool bReverse)
 TolmachWindow::~TolmachWindow()
 {
 } 
+
+BTextControl*
+TolmachWindow::WordEdit()
+{
+	//return m_pTolmachView->m_pWordEdit;
+	return m_pWordEdit;
+}
+
+BListView*
+TolmachWindow::WordsList()
+{
+	//return m_pTolmachView->m_pWordsList;
+	return m_pWordsList;
+}
+
+
+TolmachWindow::ArticleView*
+TolmachWindow::TransView()
+{
+	//return m_pTolmachView->m_pTransView;
+	return m_pTransView;
+}
+
 
 bool TolmachWindow::QuitRequested()
 {
@@ -66,16 +95,113 @@ bool TolmachWindow::QuitRequested()
   return bRet;
 }
 
+void
+TolmachWindow::initClientView()
+{
+    //word edit control
+  BRect rect(cfHorzSpace, cfVertSpace, cfWordsWidth, 0);
+  m_pWordEdit = new BTextControl(rect, "WordEdit",
+							B_TRANSLATE("Word(s):"), "", 0, B_FOLLOW_NONE);
+  //m_pTolmachView->AddChild(m_pWordEdit);
+  m_pWordEdit->ResizeToPreferred();
+  m_pWordEdit->SetModificationMessage(new BMessage(MSG_EDIT_CHANGE));
+  float fWordHeight = m_pWordEdit->Bounds().Height();
+  m_pWordEdit->ResizeTo(cfWordsWidth, fWordHeight);
+
+    //words list view
+  rect.Set(0, 0, cfWordsWidth - B_V_SCROLL_BAR_WIDTH, cfWordsHeight);  
+  m_pWordsList = new BListView(rect, "WordsList");
+  m_pWordsList->MoveTo(cfHorzSpace, fWordHeight + cfVertSpace * 2);
+  m_pWordsListScrollView =
+                  new BScrollView("ScrollWords", m_pWordsList,
+                                     B_FOLLOW_NONE, 0, false, true);
+  //m_pTolmachView->AddChild(m_pWordsListScrollView);
+
+  m_pWordsList->SetSelectionMessage(new BMessage(MSG_LIST_CHANGE));
+  m_pWordsList->SetInvocationMessage(new BMessage(MSG_LIST_INVOKE));
+
+    //translation text view
+  rect.Set(0, 0, cfWordsWidth - B_V_SCROLL_BAR_WIDTH, cfTransHeight);
+  m_pTransView = new ArticleView(rect, "TransView", rect,
+                                 B_FOLLOW_NONE, B_NAVIGABLE | B_WILL_DRAW);
+  m_pTransView->MoveTo(cfHorzSpace ,
+                       fWordHeight + cfWordsHeight + cfVertSpace * 3);
+  m_pTransViewScrollView =
+                  new BScrollView("TransView", m_pTransView,
+                     B_FOLLOW_LEFT | B_FOLLOW_TOP, 0, true, true);
+  //m_pTolmachView->AddChild(pTransScrollView);
+  m_pTransView->MakeEditable(false);
+  ResizeTo(cfWordsWidth + cfHorzSpace * 2,
+             cfTransHeight + fWordHeight + cfWordsHeight +
+                    B_H_SCROLL_BAR_HEIGHT + cfVertSpace * 4);
+
+
+  m_pWordsListScrollView->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP_BOTTOM);
+  m_pWordsList->SetResizingMode(B_FOLLOW_ALL);
+  m_pWordEdit->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP);
+  m_pTransViewScrollView->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_BOTTOM);
+  m_pTransView->SetResizingMode(B_FOLLOW_ALL);
+  m_pTransView->SetStylable(true);
+  
+}
+
+void TolmachWindow::initMenuBar()
+{
+  BRect rect(0, 0, 0, 0);
+  m_pMenuBar = new BMenuBar(rect, "Tolmach Menu Bar");
+   //dictionaries popup menu  
+  BMenu *pTolmachMenu = new BMenu(B_TRANSLATE("Tolmach"));
+  
+  //Preferences menu item
+/*  BMenuItem *pPrefsMenuItem = new BMenuItem("Preferences...",
+                                  new BMessage(MSG_CMD_DICT_PREFS));
+  pTolmachMenu->AddItem(pPrefsMenuItem);
+  //About menu item
+  pTolmachMenu->AddSeparatorItem(); */
+  BMenuItem *pAboutMenuItem = new BMenuItem(B_TRANSLATE("About" B_UTF8_ELLIPSIS),
+                                  new BMessage(B_ABOUT_REQUESTED));
+  pAboutMenuItem->SetTarget(NULL, be_app);
+  pTolmachMenu->AddItem(pAboutMenuItem);
+  //Quit menu item
+  pTolmachMenu->AddSeparatorItem();
+  BMenuItem *pCloseMenuItem = new BMenuItem(B_TRANSLATE("Close"),
+                                 new BMessage(B_QUIT_REQUESTED), 'W');
+  pTolmachMenu->AddItem(pCloseMenuItem);
+  BMenuItem *pQuitMenuItem = new BMenuItem(B_TRANSLATE("Quit"),
+                                 new BMessage(MSG_CMD_QUIT_REQUESTED), 'Q');
+  pTolmachMenu->AddItem(pQuitMenuItem);
+  m_pMenuBar->AddItem(pTolmachMenu);
+
+  UpdateDictMenu();   
+  //AddChild(m_pMenuBar);
+}
+
 void TolmachWindow::initLayout()
 {
   initMenuBar();
-  
+/*  
   float menuHeight = m_pMenuBar->Bounds().Height();
     // Menu view
   m_pTolmachView = new TolmachView(B_FOLLOW_NONE); // don't follow window just yet!
   m_pTolmachView->MoveBy(0, menuHeight + 1);
-  AddChild(m_pTolmachView);
+  //AddChild(m_pTolmachView);
+*/
+  initClientView();
   
+  m_pStatusView = new BStringView(BRect(0,0,1,1)/*statusFrame*/, "Status View",
+                                   B_TRANSLATE("Stattuz"), B_FOLLOW_ALL);
+  m_pStatusView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+
+  BLayoutBuilder::Group<>(this, B_VERTICAL)
+	  .Add(m_pMenuBar)
+	  .AddSplit(B_VERTICAL, 2.0)
+		.SetInsets(2., 2., 2., 2.)
+		.Add(m_pWordEdit)
+		.Add(m_pWordsListScrollView)
+		.Add(m_pTransViewScrollView)
+		.Add(m_pStatusView)
+	  .End();
+  /*
     // Status view	
   BRect Rect = m_pTolmachView->Frame();
   float top = Rect.bottom + 1;
@@ -92,9 +218,13 @@ void TolmachWindow::initLayout()
 
   BRect statusFrame = pStatusBox->Bounds();
   statusFrame.InsetBy(2,2);	
-  m_pStatusView = new BStringView(statusFrame, "Status View",
+*/  
+  /*
+  m_pStatusView = new BStringView(BRect(0,0,1,1)/ *statusFrame* /, "Status View",
                                    B_TRANSLATE("Stattuz"), B_FOLLOW_ALL);
   m_pStatusView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+  */
+/*  
   pStatusBox->AddChild(m_pStatusView);
   
   float windowWidth = m_pTolmachView->Frame().right;
@@ -110,6 +240,7 @@ void TolmachWindow::initLayout()
   
   m_pTolmachView->SetResizingMode(B_FOLLOW_TOP_BOTTOM | B_FOLLOW_LEFT_RIGHT);
   pStatusBox->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_BOTTOM);                                 
+*/  
 }
 
 void
@@ -137,36 +268,6 @@ TolmachWindow::LoadDictionary(void *param)
   return ret;
 }
 
-void TolmachWindow::initMenuBar()
-{
-  BRect rect(0, 0, 0, 0);
-  m_pMenuBar = new BMenuBar(rect, "Tolmach Menu Bar");
-   //dictionaries popup menu  
-  BMenu *pTolmachMenu = new BMenu(B_TRANSLATE("Tolmach"));
-  
-  //Preferences menu item
-/*  BMenuItem *pPrefsMenuItem = new BMenuItem("Preferences...",
-                                  new BMessage(MSG_CMD_DICT_PREFS));
-  pTolmachMenu->AddItem(pPrefsMenuItem);
-  //About menu item
-  pTolmachMenu->AddSeparatorItem(); */
-  BMenuItem *pAboutMenuItem = new BMenuItem(B_TRANSLATE("About..."),
-                                  new BMessage(B_ABOUT_REQUESTED));
-  pAboutMenuItem->SetTarget(NULL, be_app);
-  pTolmachMenu->AddItem(pAboutMenuItem);
-  //Quit menu item
-  pTolmachMenu->AddSeparatorItem();
-  BMenuItem *pCloseMenuItem = new BMenuItem(B_TRANSLATE("Close"),
-                                 new BMessage(B_QUIT_REQUESTED), 'W');
-  pTolmachMenu->AddItem(pCloseMenuItem);
-  BMenuItem *pQuitMenuItem = new BMenuItem(B_TRANSLATE("Quit"),
-                                 new BMessage(MSG_CMD_QUIT_REQUESTED), 'Q');
-  pTolmachMenu->AddItem(pQuitMenuItem);
-  m_pMenuBar->AddItem(pTolmachMenu);
-
-  UpdateDictMenu();   
-  AddChild(m_pMenuBar);
-}
 
 void TolmachWindow::UpdateDictMenu()
 {
@@ -279,7 +380,8 @@ void TolmachWindow::DispatchMessage(BMessage *msg, BHandler *target)
 {
   BWindow::DispatchMessage(msg, target);
   if(msg->what == B_KEY_DOWN){
-    if(m_pTolmachView->m_pWordEdit->ChildAt(0) == target)
+    //if(m_pTolmachView->m_pWordEdit->ChildAt(0) == target)
+    if(m_pWordEdit->ChildAt(0) == target)
       HandleWordEditKeyDown(msg);
   }
 }
@@ -293,8 +395,10 @@ void TolmachWindow::HandleWordEditKeyDown(BMessage *message)
 		return;
 	}
 	
-    BListView *pWordsList = m_pTolmachView->m_pWordsList;
-    BTextControl *pWordEdit = m_pTolmachView->m_pWordEdit;
+    //BListView *pWordsList = m_pTolmachView->m_pWordsList;
+    BListView *pWordsList = m_pWordsList;
+    //BTextControl *pWordEdit = m_pTolmachView->m_pWordEdit;
+    BTextControl *pWordEdit = m_pWordEdit;
 	int min = 0;
 	int idx = pWordsList->CurrentSelection();
 	int max = pWordsList->CountItems() - 1;
@@ -340,7 +444,70 @@ void TolmachWindow::HandleWordEditKeyDown(BMessage *message)
 	BStringItem *pItem = static_cast<BStringItem *>(pWordsList->ItemAt(idx));
 	if (pItem != 0) {
 		pWordEdit->SetText(BString(pItem->Text()).Trim());
-		m_pTolmachView->SetSelectWordInListWatchDog(system_time());
+		SetSelectWordInListWatchDog(system_time());
 	}
+}
+
+void
+TolmachWindow::SelectWordInList(int index)
+{
+  m_pWordsList->Select(index);
+  m_pWordsList->ScrollToSelection();
+}
+
+void
+TolmachWindow::SetSelectWordInListWatchDog(bigtime_t time)
+{
+  m_selectWordInListWatchDog = time;
+}
+
+bigtime_t
+TolmachWindow::SelectWordInListWatchDog()
+{
+	return m_selectWordInListWatchDog;
+}
+
+TolmachWindow::ArticleView::ArticleView(BRect frame, const char* name, BRect textRect,
+						uint32 resizingMode, uint32 flags)
+				: BTextView(frame, name, textRect, resizingMode, flags)
+{
+}
+
+void TolmachWindow::ArticleView::ResetStyleArray()
+{
+  aStyleItems.clear();
+  BFont font;
+  GetFont(&font);
+  font.SetFace(B_REGULAR_FACE);
+  SetFontAndColor(0, -1, &font);
+}
+
+void TolmachWindow::ArticleView::AppendStyleItem(bool bBold, int32 start, int32 off)
+{
+   StyleItem si;
+   si.bBold = bBold;
+   si.start = start;
+   si.end = start + off;
+   aStyleItems.push_back(si);
+}
+
+void TolmachWindow::ArticleView::ApplyStyleArray()
+{
+  BFont fontBold;
+  GetFont(&fontBold);
+  fontBold.SetFace(B_BOLD_FACE | B_ITALIC_FACE);
+  BFont fontHiLight;
+  GetFont(&fontHiLight);
+  fontHiLight.SetFace(B_BOLD_FACE);
+  rgb_color rgbBold = make_color(0, 0, 128);
+  rgb_color rgbHiLight = make_color(0, 128, 0);
+
+  for(std::list<StyleItem>::iterator i = aStyleItems.begin();
+                                      i != aStyleItems.end(); i++){
+	if (i->bBold) 
+		SetFontAndColor(i->start, i->end, &fontBold, B_FONT_ALL, &rgbBold);
+	else
+		SetFontAndColor(i->start, i->end, &fontHiLight, B_FONT_ALL, &rgbHiLight);
+  }
 }
 

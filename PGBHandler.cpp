@@ -175,8 +175,8 @@ PGBHandler::CloseDictionary()
   m_aTreeLett = 0;
   m_nCurrent = -1;
   m_pOuterWin->Lock();
-  m_pOuterWin->m_pTolmachView->m_pWordsList->DoForEach(FreeListItem);
-  m_pOuterWin->m_pTolmachView->m_pWordsList->MakeEmpty();
+  m_pOuterWin->WordsList()->DoForEach(FreeListItem);
+  m_pOuterWin->WordsList()->MakeEmpty();
   m_pOuterWin->Unlock();
 }
 
@@ -210,7 +210,7 @@ PGBHandler::LoadWords()
   status_t status = B_OK;
   if(size == (status = m_fileDict.ReadAt(nWordsAddress, /*&m_aWords[0]*/m_aWords, size))){
     m_nNumberWords = m_pPGBIndex->GetNumberWords();
-    BListView *pWordsView = m_pOuterWin->m_pTolmachView->m_pWordsList;
+    BListView *pWordsView = m_pOuterWin->WordsList();
     int count = pWordsView->CountItems();
     if(count)
       pWordsView->RemoveItems(0, count);
@@ -493,12 +493,13 @@ PGBHandler::WordHighlighted()
   unsigned char num = 0;
   BString currentWord, s;
 
-  TolmachView* pTolmachView = m_pOuterWin->m_pTolmachView;
-  BTextView *pTransView = m_pOuterWin->m_pTolmachView->m_pTransView;
+//  TolmachView* pTolmachView = m_pOuterWin->m_pTolmachView;
+  TolmachWindow::ArticleView *pTransView = m_pOuterWin->TransView();
   pTransView->Delete(0, pTransView->TextLength());
-  pTolmachView->ResetStyleArray();
+  //pTolmachView->ResetStyleArray();
+  pTransView->ResetStyleArray();
 
-  int cur_idx = m_pOuterWin->m_pTolmachView->m_pWordsList->CurrentSelection();
+  int cur_idx = m_pOuterWin->WordsList()->CurrentSelection();
   for (int i=0; i < cur_idx; i++)
      m_pPGBIndex->FindNext(j);
      
@@ -543,7 +544,8 @@ PGBHandler::WordHighlighted()
   pTransView->Insert(s.String());
   pTransView->Insert("\n");
 
-  pTolmachView->AppendStyleItem(true, 0, s.Length());
+  //pTolmachView->AppendStyleItem(true, 0, s.Length());
+  pTransView->AppendStyleItem(true, 0, s.Length());
 //ZZ
 //  data->translation->boldMas[0]=0;
   
@@ -565,7 +567,8 @@ PGBHandler::WordHighlighted()
         sTmp = AdditionalWord(bb);
         sTmp += ":";
         //data->translation->insertLine(sTmp);
-		pTolmachView->AppendStyleItem(true, pTransView->TextLength(), sTmp.Length());
+		//pTolmachView->AppendStyleItem(true, pTransView->TextLength(), sTmp.Length());
+		pTransView->AppendStyleItem(true, pTransView->TextLength(), sTmp.Length());
         pTransView->Insert(sTmp.String());
         pTransView->Insert("\n");
         k++;
@@ -584,7 +587,8 @@ PGBHandler::WordHighlighted()
       
       //Вставка строки
       //data->translation->insertLine(s);
-	  pTolmachView->AppendStyleItem(false, pTransView->TextLength() + hiStart, hiEnd - hiStart);
+	  //pTolmachView->AppendStyleItem(false, pTransView->TextLength() + hiStart, hiEnd - hiStart);
+	  pTransView->AppendStyleItem(false, pTransView->TextLength() + hiStart, hiEnd - hiStart);
       pTransView->Insert(s.String());
       pTransView->Insert("\n");
       indexI++;
@@ -592,7 +596,8 @@ PGBHandler::WordHighlighted()
     }
   }
   
-  pTolmachView->ApplyStyleArray();
+  //pTolmachView->ApplyStyleArray();
+  pTransView->ApplyStyleArray();
 }
 
 BString
@@ -831,11 +836,11 @@ PGBHandler::WordEditChanged(BMessage* message)
   // prevent from update after program selection.
   bigtime_t when = 0;
   message->FindInt64("when", &when);
-  if (m_pOuterWin->m_pTolmachView->SelectWordInListWatchDog() > when)
+  if (m_pOuterWin->SelectWordInListWatchDog() > when)
 	  return;
 
   int j = 0;
-  BString strSrc(m_pOuterWin->m_pTolmachView->m_pWordEdit->Text());
+  BString strSrc(m_pOuterWin->WordEdit()->Text());
   if(strSrc.Length() <= 0)
 	  return;
 
@@ -849,7 +854,7 @@ PGBHandler::WordEditChanged(BMessage* message)
     j = Seek(strDest.String(), nLength);
   }
 
-  m_pOuterWin->m_pTolmachView->SelectWordInList(j);
+  m_pOuterWin->SelectWordInList(j);
 }
 
 BString
@@ -879,17 +884,18 @@ PGBHandler::WordListInvoked()
   BString s;
 
 //  data->translation->clear();
-  TolmachView* pTolmachView = m_pOuterWin->m_pTolmachView;
-  BTextView *pTransView = m_pOuterWin->m_pTolmachView->m_pTransView;
+//XXX  TolmachView* pTolmachView = m_pOuterWin->m_pTolmachView;
+  TolmachWindow::ArticleView *pTransView = m_pOuterWin->TransView();
   pTransView->Delete(0, pTransView->TextLength());
 //  data->translation->setReadOnly(false);
-  pTolmachView->ResetStyleArray();
+  //pTolmachView->ResetStyleArray();
+  pTransView->ResetStyleArray();
 
 //ZZ
 //  data->translation->unloadHightMas();
 //  data->translation->unloadBoldMas();
 
-  int cur_idx = m_pOuterWin->m_pTolmachView->m_pWordsList->CurrentSelection();
+  int cur_idx = m_pOuterWin->WordsList()->CurrentSelection();
   for (int i=0; i < cur_idx; i++)
      m_pPGBIndex->FindNext(j);
 
@@ -971,7 +977,8 @@ PGBHandler::WordListInvoked()
             sTmp += ":";
             //data->translation->insertLine(sTmp);
             //data->translation->boldMas[k]=lineI; //ZZ
-			pTolmachView->AppendStyleItem(true, pTransView->TextLength(), sTmp.Length());
+			//pTolmachView->AppendStyleItem(true, pTransView->TextLength(), sTmp.Length());
+			pTransView->AppendStyleItem(true, pTransView->TextLength(), sTmp.Length());
             pTransView->Insert(sTmp.String());
             pTransView->Insert("\n");
             k++;
@@ -988,7 +995,8 @@ PGBHandler::WordListInvoked()
   }
   delete[] addrMas;
 //  data->translation->setReadOnly(true);
-  pTolmachView->ApplyStyleArray();
+  //pTolmachView->ApplyStyleArray();
+  pTransView->ApplyStyleArray();
 }
 
 BString
