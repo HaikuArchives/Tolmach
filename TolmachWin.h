@@ -20,12 +20,16 @@
 #define _TOLMACHWIN_H_
 
 
+#include <list>
+
 #include <Window.h>
 #include <Menu.h>
 #include <StatusBar.h>
 #include <StringView.h>
+#include <TextView.h>
+#include <ListView.h>
+#include <TextControl.h>
 
-#include "TolmachView.h"
 #include "PGBHandler.h"
 
 class TolmachWindow : public BWindow

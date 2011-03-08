@@ -26,9 +26,11 @@
 #include <File.h>
 #include <String.h>
 
-#include "TolmachView.h"
 
 class TolmachWindow;
+
+class BListItem;
+class BMessage;
 
 class PGBHandler
 {

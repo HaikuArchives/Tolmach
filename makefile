@@ -35,9 +35,10 @@ APP_MIME_SIG=x-vnd.Zyozik-Tolmach
 SRCS=TolmachApp.cpp\
      Preferences.cpp\
      TolmachWin.cpp\
-     TolmachView.cpp\
      PGBHandler.cpp\
      PGBIndex.cpp 
+
+#     TolmachView.cpp\
 
 #	specify the resource files to use
 #	full path or a relative path to the resource file can be used.

@@ -32,7 +32,6 @@
 #include <scheduler.h>
 
 #include "TolmachApp.h"
-#include "TolmachView.h"
 #include "Constants.h"
 
 #undef B_TRANSLATE_CONTEXT
@@ -201,6 +200,8 @@ void TolmachWindow::initLayout()
 		.Add(m_pTransViewScrollView)
 		.Add(m_pStatusView)
 	  .End();
+
+  m_pWordEdit->MakeFocus(true);
   /*
     // Status view	
   BRect Rect = m_pTolmachView->Frame();
