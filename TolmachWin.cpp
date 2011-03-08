@@ -253,8 +253,6 @@ void TolmachWindow::MessageReceived(BMessage *message)
         m_PGBHandler.WordListInvoked();
         break;
       case MSG_EDIT_CHANGE:
-		message->FindInt64("when", &when);
-		fprintf(stderr, "Edit modify message.:%lld\n", when);
         m_PGBHandler.WordEditChanged(message);
         break;
       case MSG_CMD_QUIT_REQUESTED:
@@ -295,14 +293,11 @@ void TolmachWindow::HandleWordEditKeyDown(BMessage *message)
 		return;
 	}
 	
-	fprintf(stderr, "what %d\n", message->what);
-
     BListView *pWordsList = m_pTolmachView->m_pWordsList;
     BTextControl *pWordEdit = m_pTolmachView->m_pWordEdit;
 	int min = 0;
 	int idx = pWordsList->CurrentSelection();
 	int max = pWordsList->CountItems() - 1;
-	fprintf(stderr, "1:%d <- %d -> %d\n", min, idx, max);
 	switch (nKey) {
 		case B_UP_ARROW:
 			idx--;
@@ -331,37 +326,21 @@ void TolmachWindow::HandleWordEditKeyDown(BMessage *message)
 			break;
 
 		default:
-			//BTextControl::MessageReceived(message);
 			return;
 	}
-		
-	fprintf(stderr, "2: %d <- %d -> %d\n", min, idx, max);
 	
 	idx = max_c(min, idx);
 	idx = min_c(max, idx);
 
-	fprintf(stderr, "3: %d <- %d -> %d\n", min, idx, max);
-	
 	pWordsList->Select(idx);
 	pWordsList->ScrollToSelection();
 
 	idx = pWordsList->CurrentSelection();
 	
-	fprintf(stderr, "3: %d <- %d -> %d\n", min, idx, max);
-	
 	BStringItem *pItem = static_cast<BStringItem *>(pWordsList->ItemAt(idx));
 	if (pItem != 0) {
-	//	pWordEdit->SetText("");
-		//m_pTolmachView->SetSelectWordInListWatchDog(system_time());
-
-	fprintf(stderr, "<<%lld\n", system_time());
 		pWordEdit->SetText(BString(pItem->Text()).Trim());
-	fprintf(stderr, ">>%lld\n", system_time());
 		m_pTolmachView->SetSelectWordInListWatchDog(system_time());
-
-		//m_pTolmachView->SetSelectWordInListWatchDog(false);
-	//	BTextView *pView = static_cast<BTextView *>(pWordEdit->ChildAt(0));
-	//	pView->SelectAll();
 	}
 }
 

@@ -828,6 +828,7 @@ PGBHandler::Seek(const char* s, const unsigned int& pos)
 void
 PGBHandler::WordEditChanged(BMessage* message)
 {
+  // prevent from update after program selection.
   bigtime_t when = 0;
   message->FindInt64("when", &when);
   if (m_pOuterWin->m_pTolmachView->SelectWordInListWatchDog() > when)
@@ -835,7 +836,6 @@ PGBHandler::WordEditChanged(BMessage* message)
 
   int j = 0;
   BString strSrc(m_pOuterWin->m_pTolmachView->m_pWordEdit->Text());
-  fprintf(stderr, "WEC:%s<\n", strSrc.String());
   if(strSrc.Length() <= 0)
 	  return;
 
@@ -850,8 +850,6 @@ PGBHandler::WordEditChanged(BMessage* message)
   }
 
   m_pOuterWin->m_pTolmachView->SelectWordInList(j);
-  /*m_pOuterWin->m_pTolmachView->m_pWordsList->Select(j);
-  m_pOuterWin->m_pTolmachView->m_pWordsList->ScrollToSelection();*/
 }
 
 BString

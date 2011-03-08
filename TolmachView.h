@@ -29,13 +29,6 @@
 
 class TolmachView : public BView
 {
-	class TextControl : public BTextControl {
-			TolmachView& m_rView;
-	public:
-					TextControl(TolmachView& rView, BRect& rect);
-    virtual	void	MessageReceived(BMessage *message);
-	};
-
     struct  StyleItem {
 		bool  bBold;
 		int32 start;
@@ -46,7 +39,7 @@ class TolmachView : public BView
 	bigtime_t		m_selectWordInListWatchDog;
 
   public:
-    TextControl*	m_pWordEdit;
+    BTextControl*	m_pWordEdit;
     BListView*		m_pWordsList;
     BScrollView*	m_pWordsListScrollView;
     BTextView*		m_pTransView;

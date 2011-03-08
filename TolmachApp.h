@@ -86,7 +86,6 @@ class TolmachApplication : public BApplication
     DictVector m_dicts;
     BRect m_rcBounds;
     
-    //status_t m_statusInit;
   typedef std::vector<int> Dict2LoadVector;
   Dict2LoadVector m_dicts2load;  
  
@@ -107,7 +106,6 @@ class TolmachApplication : public BApplication
     virtual void RefsReceived(BMessage *msg);
     virtual void ArgvReceived(int32 argc, char **argv);
     void WindowCloseRequested(int nDict, bool bReverse);
-//    virtual void MessageReceived(BMessage *message);
 
     status_t GetDictAt(DictDescription *ddescr, int idx) const;
     int DictCount() const;

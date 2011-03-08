@@ -30,7 +30,6 @@
 #define B_TRANSLATE_CONTEXT "TolmachPreferences"
 
 const char* const cszPreferencesName = "Tolmach_Preferences";
-//const char* const cszCurrentDictName = "CurrentDict";
 const char* const cszWinState = "WinState";
 const type_code ctcWinState = 'WNST';
 

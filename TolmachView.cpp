@@ -52,7 +52,8 @@ void TolmachView::AllAttached(void)
 {
     //word edit control
   BRect rect(cfHorzSpace, cfVertSpace, cfWordsWidth, 0);
-  m_pWordEdit = new TextControl(*this, rect);
+  m_pWordEdit = new BTextControl(rect, "WordEdit",
+							B_TRANSLATE("Word(s):"), "", 0, B_FOLLOW_NONE);
   AddChild(m_pWordEdit);
   m_pWordEdit->ResizeToPreferred();
   m_pWordEdit->SetModificationMessage(new BMessage(MSG_EDIT_CHANGE));
@@ -136,23 +137,8 @@ void TolmachView::ApplyStyleArray()
   rgb_color rgbBold = make_color(0, 0, 128);
   rgb_color rgbHiLight = make_color(0, 128, 0);
 
-  //aStyleItems.sort();
   for(std::list<StyleItem>::iterator i = aStyleItems.begin();
                                       i != aStyleItems.end(); i++){
-/*	printf("apply0:%d %d-%d\n", i->line, i->start, i->end);
-	int32 lineStart = m_pTransView->OffsetAt(i->line);
-	int32 start = lineStart + i->start;
-	int32 end = lineStart + i->end;
-	if(i->end == -1) {
-		int32 nextLine = i->line + 1;
-		if(nextLine == m_pTransView->CountLines()) {
-			end = m_pTransView->TextLength();
-		} else {
-			end = m_pTransView->OffsetAt(nextLine) - 1;
-		}
-	}
-	
-	printf("apply1:%d %d-%d\n", lineStart, start, end); */
 	if (i->bBold) 
 		m_pTransView->SetFontAndColor(i->start, i->end, &fontBold, B_FONT_ALL, &rgbBold);
 	else
@@ -176,109 +162,7 @@ TolmachView::SelectWordInListWatchDog()
 void
 TolmachView::SelectWordInList(int index)
 {
-//  if (!m_bSelectWordInListWatchDog) {
-    m_pWordsList->Select(index);
-    m_pWordsList->ScrollToSelection();
-//	fprintf(stderr, "%d:select\n", m_bSelectWordInListWatchDog);
- // } else {
-//	m_bSelectWordInListWatchDog = false;
-//	fprintf(stderr, "%d:disable\n", m_bSelectWordInListWatchDog);
-//  }
-}
-
-TolmachView::TextControl::TextControl(TolmachView& rView, BRect& rect)
-						: 
-						BTextControl(rect, "WordEdit",
-							B_TRANSLATE("Word(s):"), "", 0, B_FOLLOW_NONE),
-						m_rView(rView)
-{
-}
-
-
-void
-TolmachView::TextControl::MessageReceived(BMessage *message)
-{
-/*	fprintf(stderr, "what %d\n", message->what);
-	if(message->what != B_KEY_DOWN) {
-		BTextControl::MessageReceived(message);
-		return;
-	}
-
-	int32 nKey = 0;
-	status_t st = message->FindInt32("raw_char", &nKey);
-	if (B_OK != st) {
-		fprintf(stderr, "raw_char field not found: %s\n", strerror(st));
-		return;
-	}
-	
-	fprintf(stderr, "what %d\n", message->what);
-
-//    BListView *pWordsList = m_pTolmachView->m_pWordsList;
-//    BTextControl *pWordEdit = m_pTolmachView->m_pWordEdit;
-	int min = 0;
-	int idx = m_rView.m_pWordsList->CurrentSelection();
-	int max = m_rView.m_pWordsList->CountItems() - 1;
-	fprintf(stderr, "%d: %d : %d\n", min, idx, max);
-	switch (nKey) {
-		case B_UP_ARROW:
-			idx--;
-			break;
-		case B_DOWN_ARROW:
-			idx++;
-			break;
-		case B_HOME:
-			idx = min;
-			break;
-		case B_END:
-			idx = max;
-			break;
-		case B_PAGE_UP:
-		case B_PAGE_DOWN:
-			{
-				BScrollBar *pScrollBar = m_rView.m_pWordsListScrollView->ScrollBar(B_VERTICAL);
-				if (0 != pScrollBar) {
-					float fSmallStep = 1.0;
-					float fBigStep = 10.0;
-					pScrollBar->GetSteps(&fSmallStep, &fBigStep);
-
-					float fScrollValue = pScrollBar->Value();
-					bool bUp = (nKey == B_PAGE_UP);
-					fScrollValue += bUp ? -fBigStep : fBigStep;
-					idx = m_rView.m_pWordsList->IndexOf(BPoint(0, fScrollValue));
-					if (idx < 0) {
-						idx = bUp ? 0 : m_rView.m_pWordsList->CountItems();
-					}
-				}
-			}
-			break;
-		case B_ENTER:
-			{
-				char ch = static_cast<char>(nKey);  
-				m_rView.m_pWordsList->BListView::KeyDown(&ch, 1);
-			}
-			break;
-
-		default:
-			BTextControl::MessageReceived(message);
-			return;
-	}
-		
-	idx = max_c(min, idx);
-	idx = min_c(max, idx);
-
-	fprintf(stderr, "%d: %d : %d\n", min, idx, max);
-	
-	m_rView.m_pWordsList->Select(idx);
-	m_rView.m_pWordsList->ScrollToSelection();
-
-	idx = m_rView.m_pWordsList->CurrentSelection();
-	BStringItem *pItem = static_cast<BStringItem *>(m_rView.m_pWordsList->ItemAt(idx));
-	if (pItem != 0) {
-		m_rView.m_pWordEdit->SetText(pItem->Text());
-		BTextView *pView = static_cast<BTextView *>(m_rView.m_pWordEdit->ChildAt(0));
-		pView->SelectAll();
-	}
-*/
-	BTextControl::MessageReceived(message);
+  m_pWordsList->Select(index);
+  m_pWordsList->ScrollToSelection();
 }
 

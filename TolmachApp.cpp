@@ -54,8 +54,7 @@ int main(int argc, char** argv)
 
 TolmachApplication::TolmachApplication()
                     :BApplication(cszApplicationSignature),
-                    m_rcBounds(100, 80, 560, 320)/*,
-                    m_statusInit(B_NO_INIT)*/
+                    m_rcBounds(100, 80, 560, 320)
 {
   UpdateMIMETypes();
   LoadDictList();
@@ -64,15 +63,7 @@ TolmachApplication::TolmachApplication()
 void
 TolmachApplication::ReadyToRun(void)
 {
-  /*switch(m_statusInit){
-  case B_NO_INIT:*/
-    LoadWinStates();
- /*   m_statusInit = B_OK;
-    break;
-  case B_ERROR:
-    be_app->PostMessage(B_QUIT_REQUESTED);
-    break;  
-  }*/
+  LoadWinStates();
 }
 
 void
@@ -165,22 +156,22 @@ TolmachApplication::OffsetNextBounds(TolmachWindow *pLatestWin)
 bool
 TolmachApplication::QuitRequested(void)
 {
-  /*if(m_statusInit == B_OK)*/{
-    m_Preferences.m_states.clear();
-    for(DictIterator i = m_dicts.begin(); i != m_dicts.end(); i++){
-      for(int j = 0; j < eCountLng; j++){
-        if(0 != i->wins[j]){
-          Preferences::WinState state;
-          state.Set(i->wins[j]->Frame(), i->path, j != eOLng);
-          m_Preferences.m_states.push_back(state);
-        }
-      }
-    }  
-    if(0 == m_Preferences.m_states.size()){
-      m_Preferences.m_states.push_back(m_Preferences.m_wsLastClosed);
-    }
-  }
-  return BApplication::QuitRequested();
+	m_Preferences.m_states.clear();
+	for(DictIterator i = m_dicts.begin(); i != m_dicts.end(); i++){
+	  for(int j = 0; j < eCountLng; j++){
+		if(0 != i->wins[j]){
+		  Preferences::WinState state;
+		  state.Set(i->wins[j]->Frame(), i->path, j != eOLng);
+		  m_Preferences.m_states.push_back(state);
+		}
+	  }
+	}  
+
+	if(0 == m_Preferences.m_states.size()){
+	  m_Preferences.m_states.push_back(m_Preferences.m_wsLastClosed);
+	}
+
+	return BApplication::QuitRequested();
 }
 
 void 
@@ -424,7 +415,6 @@ TolmachApplication::DictCount() const
 void
 TolmachApplication::LoadDictList()
 {
-//  BPath pathDicts(m_Preferences.m_pathCurrent);
   BPath pathDicts;
   find_directory(B_COMMON_DATA_DIRECTORY, &pathDicts);
   pathDicts.Append(cszDictionariesDir);
@@ -481,14 +471,3 @@ TolmachApplication::LoadDictFile(BEntry& entry)
   return -1;
 }
 
-/*
-void TolmachApplication::MessageReceived(BMessage *message){
-    switch(message->what){
-      case B_KEY_DOWN:
-        break;    
-      default:
-        BApplication::MessageReceived(message);
-        break;
-    }
-}
-*/
