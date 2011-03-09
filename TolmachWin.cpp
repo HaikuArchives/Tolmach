@@ -56,7 +56,8 @@ TolmachWindow::~TolmachWindow()
 {
 } 
 
-BTextControl*
+//BTextControl*
+BTextView*
 TolmachWindow::WordEdit()
 {
 	//return m_pTolmachView->m_pWordEdit;
@@ -99,11 +100,13 @@ TolmachWindow::initClientView()
 {
     //word edit control
   BRect rect(cfHorzSpace, cfVertSpace, cfWordsWidth, 0);
-  m_pWordEdit = new BTextControl(rect, "WordEdit",
-							B_TRANSLATE("Word(s):"), "", 0, B_FOLLOW_NONE);
+  //m_pWordEdit = new BTextControl(rect, "WordEdit",
+	//						B_TRANSLATE("Word(s):"), "", 0, B_FOLLOW_NONE);
+  m_pWordEdit = new BTextView(rect, "WordEdit", /*
+							B_TRANSLATE("Word(s):"), ""*/rect, 0, B_FOLLOW_NONE);
   //m_pTolmachView->AddChild(m_pWordEdit);
   m_pWordEdit->ResizeToPreferred();
-  m_pWordEdit->SetModificationMessage(new BMessage(MSG_EDIT_CHANGE));
+//XXX  m_pWordEdit->SetModificationMessage(new BMessage(MSG_EDIT_CHANGE));
   float fWordHeight = m_pWordEdit->Bounds().Height();
   m_pWordEdit->ResizeTo(cfWordsWidth, fWordHeight);
 
@@ -399,7 +402,8 @@ void TolmachWindow::HandleWordEditKeyDown(BMessage *message)
     //BListView *pWordsList = m_pTolmachView->m_pWordsList;
     BListView *pWordsList = m_pWordsList;
     //BTextControl *pWordEdit = m_pTolmachView->m_pWordEdit;
-    BTextControl *pWordEdit = m_pWordEdit;
+    //BTextControl *pWordEdit = m_pWordEdit;
+    BTextView *pWordEdit = m_pWordEdit;
 	int min = 0;
 	int idx = pWordsList->CurrentSelection();
 	int max = pWordsList->CountItems() - 1;
