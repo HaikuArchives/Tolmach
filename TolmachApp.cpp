@@ -274,8 +274,8 @@ void TolmachApplication::AboutRequested(void)
     const struct version_info *pVI = (const struct version_info *)pVersionData;
     str = pVI->short_info;
 	headerLen = str.Length();
-	str << "\n\n" << pVI->long_info << "\n";
-
+	str << "\n\n" << B_TRANSLATE("Working shell for language bases "
+								"in POLYGLOSSUM II (PGB) format.") << "\n";
     str << B_TRANSLATE("version");
    	str << " " << pVI->major << "." << pVI->middle << "." << pVI->minor
 		<< "." << szVVs[pVI->variety] << "-" << pVI->internal << "\n\n";

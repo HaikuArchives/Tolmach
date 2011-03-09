@@ -65,8 +65,8 @@ class TolmachWindow : public BWindow
     BStatusBar*		m_pProgress;
     BStringView*	m_pStatusView;
     
-    //BTextControl*	m_pWordEdit;
-    BTextView*		m_pWordEdit;
+    BTextControl*	m_pWordEdit;
+    //BTextView*		m_pWordEdit;
     BListView*		m_pWordsList;
     BScrollView*	m_pWordsListScrollView;
     ArticleView*	m_pTransView;
@@ -89,8 +89,8 @@ class TolmachWindow : public BWindow
     virtual void MessageReceived(BMessage *message);
     virtual void DispatchMessage(BMessage *msg, BHandler *target);
 
-    //BTextControl*	WordEdit();
-    BTextView*	WordEdit();
+    BTextControl*	WordEdit();
+    //BTextView*	WordEdit();
     BListView*		WordsList();
     ArticleView*	TransView();
 			void    SelectWordInList(int index);

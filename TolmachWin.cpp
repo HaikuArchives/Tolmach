@@ -56,8 +56,8 @@ TolmachWindow::~TolmachWindow()
 {
 } 
 
-//BTextControl*
-BTextView*
+BTextControl*
+//BTextView*
 TolmachWindow::WordEdit()
 {
 	//return m_pTolmachView->m_pWordEdit;
@@ -100,13 +100,14 @@ TolmachWindow::initClientView()
 {
     //word edit control
   BRect rect(cfHorzSpace, cfVertSpace, cfWordsWidth, 0);
-  //m_pWordEdit = new BTextControl(rect, "WordEdit",
-	//						B_TRANSLATE("Word(s):"), "", 0, B_FOLLOW_NONE);
-  m_pWordEdit = new BTextView(rect, "WordEdit", /*
-							B_TRANSLATE("Word(s):"), ""*/rect, 0, B_FOLLOW_NONE);
+  m_pWordEdit = new BTextControl(rect, "WordEdit",
+				B_TRANSLATE("Word(s):\t"), "", 0, B_FOLLOW_LEFT_RIGHT/*|B_FOLLOW_TOPB_FOLLOW_NONE*/);
+  //m_pWordEdit = new BTextView(rect, "WordEdit", /*
+	//						B_TRANSLATE("Word(s):"), ""*/rect, 0, B_FOLLOW_NONE);
   //m_pTolmachView->AddChild(m_pWordEdit);
   m_pWordEdit->ResizeToPreferred();
-//XXX  m_pWordEdit->SetModificationMessage(new BMessage(MSG_EDIT_CHANGE));
+//  m_pWordEdit->SetDivider(0.);
+  m_pWordEdit->SetModificationMessage(new BMessage(MSG_EDIT_CHANGE));
   float fWordHeight = m_pWordEdit->Bounds().Height();
   m_pWordEdit->ResizeTo(cfWordsWidth, fWordHeight);
 
@@ -140,7 +141,7 @@ TolmachWindow::initClientView()
 
   m_pWordsListScrollView->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP_BOTTOM);
   m_pWordsList->SetResizingMode(B_FOLLOW_ALL);
-  m_pWordEdit->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP);
+//  m_pWordEdit->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP);
   m_pTransViewScrollView->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_BOTTOM);
   m_pTransView->SetResizingMode(B_FOLLOW_ALL);
   m_pTransView->SetStylable(true);
@@ -192,16 +193,24 @@ void TolmachWindow::initLayout()
   
   m_pStatusView = new BStringView(BRect(0,0,1,1)/*statusFrame*/, "Status View",
                                    B_TRANSLATE("Stattuz"), B_FOLLOW_ALL);
-  m_pStatusView->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+  m_pStatusView->SetViewColor(ui_color(B_MENU_BACKGROUND_COLOR));
 
   BLayoutBuilder::Group<>(this, B_VERTICAL)
 	  .Add(m_pMenuBar)
-	  .AddSplit(B_VERTICAL, 2.0)
-		.SetInsets(2., 2., 2., 2.)
-		.Add(m_pWordEdit)
+	  //.SetInsets(2., 2., 2., 2.)
+	  .AddGrid()
+	    //.Add(new BStringView(BRect(0., 0., 100., 100.), "label", "Word(s):", 0, 0))
+	    //.AddGlue()
+		.AddTextControl(m_pWordEdit, 0, 0)
+	    .SetInsets(10., 0., 10., 0.)
+	  .End()
+	  .AddGroup(B_VERTICAL)
+	    .AddSplit(B_VERTICAL, 1.0)
 		.Add(m_pWordsListScrollView)
 		.Add(m_pTransViewScrollView)
-		.Add(m_pStatusView)
+	    .SetInsets(5., 0., 5., 0.)
+		.End()
+	  .Add(m_pStatusView)
 	  .End();
 
   m_pWordEdit->MakeFocus(true);
@@ -402,8 +411,8 @@ void TolmachWindow::HandleWordEditKeyDown(BMessage *message)
     //BListView *pWordsList = m_pTolmachView->m_pWordsList;
     BListView *pWordsList = m_pWordsList;
     //BTextControl *pWordEdit = m_pTolmachView->m_pWordEdit;
-    //BTextControl *pWordEdit = m_pWordEdit;
-    BTextView *pWordEdit = m_pWordEdit;
+    BTextControl *pWordEdit = m_pWordEdit;
+    //BTextView *pWordEdit = m_pWordEdit;
 	int min = 0;
 	int idx = pWordsList->CurrentSelection();
 	int max = pWordsList->CountItems() - 1;
