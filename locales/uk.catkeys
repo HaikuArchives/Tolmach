@@ -1,36 +1,36 @@
 1	ukrainian	x-vnd.Zyozik-Tolmach	2374802316
- failed to load. :(	PGBHandler		 невозможно загрузить. :(
+ failed to load. :(	PGBHandler		 неможливо загрузити. :(
  words )	PGBHandler		 слов )
-<no dictionaries>	TolmachWindow		<нет словарей>
-About Tolmach…	Tolmach		О Программе…
-About…	TolmachWindow		О Программе…
-Based on 'KDictionary' project.\n	Tolmach		Основан на результатах\nпроекта 'KDictionary'.\n
-Close	TolmachWindow		Закрыть
-Dictionaries	TolmachWindow		Словари
-Dictionaries directory '%dictsDir%' doesn't exists.	Tolmach		Каталог словарей '%dictsDir%' не существует.
+<no dictionaries>	TolmachWindow		<нема словників>
+About Tolmach…	Tolmach		Про Програму…
+About…	TolmachWindow		Про Програму…
+Based on 'KDictionary' project.\n	Tolmach		Базується на результатах\nпроекта 'KDictionary'.\n
+Close	TolmachWindow		Закрити
+Dictionaries	TolmachWindow		Словники
+Dictionaries directory '%dictsDir%' doesn't exists.	Tolmach		Каталог словників '%dictsDir%' не існує.
 Dictionary loading failed.	PGBHandler		Не удалось загрузить словарь.
-Digged out for BeOS:\tNov.2003-Jan.2004.\n	Tolmach		Разработан для BeOS:\t10/2003-01/2004.\n
-Error	PGBHandler		Ошибка
-Error	PGBIndex		Ошибка
-Error	Tolmach		Ошибка
-Error reading PGB index	PGBIndex		Ошибка чтения индекса PGB
-File %s cannot be processed as dictionary file.\n%s\n	Tolmach		Файл %s не может быть обработан как словарные данные.\n%s\n
-File '%file%' cannot be loaded.	Tolmach		Файл '%file%' не может быть загружен.
-Fill in words list. Please wait ...	PGBHandler		Заполнение списка терминов. Подождите, пожалуйста ...
-Initialize…	PGBHandler		Подготовка…
-Initializing words. Please wait...	PGBHandler		Подготовка терминов. Подождите, пожалуйста...
-Loading words	PGBHandler		Загрузка терминов
-No dictionaries available. =-(	TolmachWindow		Нет доступных словарей. =-(
+Digged out for BeOS:\tNov.2003-Jan.2004.\n	Tolmach		Розроблений для BeOS:\t10/2003-01/2004.\n
+Error	PGBHandler		Помилка
+Error	PGBIndex		Помилка
+Error	Tolmach		Помилка
+Error reading PGB index	PGBIndex		Помилка при читанні індекса PGB
+File %s cannot be processed as dictionary file.\n%s\n	Tolmach		Файл %s не може бути оброблений як словникові дані.\n%s\n
+File '%file%' cannot be loaded.	Tolmach		Файл '%file%' неможливо загрузити.
+Fill in words list. Please wait ...	PGBHandler		Заповнення списка термінів. Будь-ласка, зачекайте  ...
+Initialize…	PGBHandler		Підготовка…
+Initializing words. Please wait...	PGBHandler		Підготовка термінів. Будь-ласка, зачекайте ...
+Loading words	PGBHandler		Загрузка термінів
+No dictionaries available. =-(	TolmachWindow		Немає доступних словників. =-(
 OK	Tolmach		ОК
-Quit	TolmachWindow		Выйти
-Renewed for Haiku:\tFeb.2011-Mar.2011.\n\n	Tolmach		Возрождён для Haiku:\t02/2011-03/2011.\n\n
+Quit	TolmachWindow		Вийти
+Renewed for Haiku:\tFeb.2011-Mar.2011.\n\n	Tolmach		Відроджений для Haiku:\t02/2011-03/2011.\n\n
 Stattuz	TolmachWindow		Статус
-This application is distributed under the terms of General Public License. Look in sources for more details.\n	Tolmach		Эта программа распространяется с требованиями General Public License. Для подробностей смотрите исходные тексты программы.\n
+This application is distributed under the terms of General Public License. Look in sources for more details.\n	Tolmach		Ця програма поширюється з вимогами General Public License. Для подробиць дивіться вихідні тексти програми.\n
 Tolmach	TolmachWindow		Переводчик
-Unfortunately, it is not possible to close dictionary windows until finishing of initialization.	TolmachWindow		К сожалению, невозможно закрыть окно этого словаря до завершения процесса загрузки.
-Warning	TolmachWindow		Предупреждение
-Word(s):\t	TolmachWindow		Термин(ы):\t
-Working shell for language bases in POLYGLOSSUM II (PGB) format.	Tolmach		Оболочка для работы со словарями в формате POLYGLOSSUM II (PGB).
-\nDictionary:	PGBHandler		\nСловарь:
+Unfortunately, it is not possible to close dictionary windows until finishing of initialization.	TolmachWindow		Нажаль, неможливо закрити вікно цього словника до завершення процесу загрузки.
+Warning	TolmachWindow		Попередження
+Word(s):\t	TolmachWindow		Термін(и):\t
+Working shell for language bases in POLYGLOSSUM II (PGB) format.	Tolmach		Оболонка для работи зі словниками в форматі POLYGLOSSUM II (PGB).
+\nDictionary:	PGBHandler		\nСловник:
 \n\nstatus is: (	Tolmach		\n\nстатус: (
-version	Tolmach		Версия
+version	Tolmach		Версія
