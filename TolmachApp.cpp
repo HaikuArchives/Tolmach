@@ -130,7 +130,7 @@ TolmachApplication::ShowDictWindow(int nDict, bool bReverse, bool bUpdateMenus, 
     if(!rect)
       OffsetNextBounds(win);
     win->Show();
-
+#if 0
 	win->Lock();
 	BMessage msg2;
 	win->Archive(&msg2, true);
@@ -138,7 +138,7 @@ TolmachApplication::ShowDictWindow(int nDict, bool bReverse, bool bUpdateMenus, 
 	msg2.Flatten(&file);
 	//file.Close();
 	win->Unlock();
-
+#endif
     BMessage msg(MSG_CMD_LOAD_CURRENT_DICT);
     win->PostMessage(&msg);
     if(bUpdateMenus)

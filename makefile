@@ -102,12 +102,12 @@ WARNINGS =
 #	specify whether image symbols will be created
 #	so that stack crawls in the debugger are meaningful
 #	if TRUE symbols will be created
-SYMBOLS = TRUE
+SYMBOLS =
 
 #	specify debug settings
 #	if TRUE will allow application to be run from a source-level
 #	debugger.  Note that this will disable all optimzation.
-DEBUGGER = TRUE
+DEBUGGER =
 
 #	specify additional compiler flags for all files
 COMPILER_FLAGS =
@@ -131,3 +131,39 @@ DRIVER_PATH =
 
 ## include the makefile-engine
 include $(BUILDHOME)/etc/makefile-engine
+
+DIST_DIR := dist
+APP_DEST := $(DIST_DIR)/common/bin/ 
+LINK_DEST := $(DIST_DIR)/home/config/be/Application/
+DICT_DEST := $(DIST_DIR)/common/data/Tolmach/
+CATALOGS_DEST := $(DIST_DIR)/common/data/locale/catalogs/
+VERSION := 1.1.0
+DATE := `date +%F`
+PACKAGE_NAME := $(NAME)-$(VERSION)-x86-gcc$(CC_VER)-$(DATE)
+
+$(APP_DEST):
+	mkdir -p $(APP_DEST)
+
+$(LINK_DEST):
+	mkdir -p $(LINK_DEST)
+
+$(LINK_DEST)/$(NAME): $(LINK_DEST)
+	ln -s -f /boot/common/bin/Tolmach $(LINK_DEST)/$(NAME)
+
+$(DICT_DEST):
+	mkdir -p $(DICT_DEST)
+
+$(CATALOGS_DEST): $(OBJ_DIR)/$(APP_MIME_SIG)
+	mkdir -p $(CATALOGS_DEST)
+
+package: $(TARGET) $(APP_DEST) $(LINK_DEST)/$(NAME) $(DICT_DEST) $(CATALOGS_DEST) catalogs
+	-cp $(TARGET) $(APP_DEST)
+	-cp ./Dictionaries/* $(DICT_DEST)
+	-cp -r $(OBJ_DIR)/$(APP_MIME_SIG) $(CATALOGS_DEST)
+	echo "Package: $(NAME)" > $(DIST_DIR)/.OptionalPackageDescription
+	echo "Version: $(VERSION)-gcc$(CC_VER)" >> $(DIST_DIR)/.OptionalPackageDescription
+	echo "Copyright: Zyozik" >> $(DIST_DIR)/.OptionalPackageDescription
+	echo "Description: Working shell for PGB dictionaries." >> $(DIST_DIR)/.OptionalPackageDescription
+	echo "License: GPL" >> $(DIST_DIR)/.OptionalPackageDescription
+	cd $(DIST_DIR) && zip -9 -r -z -y $(PACKAGE_NAME).zip common .OptionalPackageDescription < .OptionalPackageDescription
+
