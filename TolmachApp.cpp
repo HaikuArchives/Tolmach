@@ -37,9 +37,11 @@
 #include "Constants.h"
 #include "TolmachWin.h"
 
-#define NEW_WINDOW_OFFSET_X 	20
-#define NEW_WINDOW_OFFSET_Y 	20
+//#define NEW_WINDOW_OFFSET_X 	20
+//#define NEW_WINDOW_OFFSET_Y 	20
 
+const BPoint ptNewWindowOffset(20.f, 20.f);
+const BRect  rcInitBounds(100.f, 80.f, 400.f, 500.f);
 
 #undef B_TRANSLATE_CONTEXT
 #define B_TRANSLATE_CONTEXT "Tolmach"
@@ -54,7 +56,7 @@ int main(int argc, char** argv)
 
 TolmachApplication::TolmachApplication()
                     :BApplication(cszApplicationSignature),
-                    m_rcBounds(100, 80, 560, 320)
+                    m_rcBounds(rcInitBounds)
 {
   UpdateMIMETypes();
   LoadDictList();
@@ -128,6 +130,15 @@ TolmachApplication::ShowDictWindow(int nDict, bool bReverse, bool bUpdateMenus, 
     if(!rect)
       OffsetNextBounds(win);
     win->Show();
+
+	win->Lock();
+	BMessage msg2;
+	win->Archive(&msg2, true);
+	BFile file("win.msg", B_CREATE_FILE|B_WRITE_ONLY);
+	msg2.Flatten(&file);
+	//file.Close();
+	win->Unlock();
+
     BMessage msg(MSG_CMD_LOAD_CURRENT_DICT);
     win->PostMessage(&msg);
     if(bUpdateMenus)
@@ -140,7 +151,7 @@ TolmachApplication::ShowDictWindow(int nDict, bool bReverse, bool bUpdateMenus, 
 void
 TolmachApplication::OffsetNextBounds(TolmachWindow *pLatestWin)
 {
-	m_rcBounds.OffsetBy(NEW_WINDOW_OFFSET_X, NEW_WINDOW_OFFSET_Y);
+	m_rcBounds.OffsetBy(ptNewWindowOffset);
 	BPoint pt = m_rcBounds.LeftTop();
 	pt.x += pLatestWin->Bounds().Width();
 	pt.y += pLatestWin->Bounds().Height();

@@ -37,11 +37,11 @@
 #undef B_TRANSLATE_CONTEXT
 #define B_TRANSLATE_CONTEXT "TolmachWindow"
 
-const float cfVertSpace = 10.f;
-const float cfHorzSpace = 10.f;
-const float cfWordsWidth  = 400.f;
-const float cfWordsHeight  = 150.f;
-const float cfTransHeight = 170.f;
+const float cfVertSpace = 5.f;
+const float cfHorzSpace = 5.f;
+//const float cfWordsWidth  = 400.f;
+//const float cfWordsHeight  = 150.f;
+//const float cfTransHeight = 170.f;
 
 TolmachWindow::TolmachWindow(BRect frame, int nDict, bool bReverse)
                :BWindow(frame, "Tolmach", B_TITLED_WINDOW, 0),
@@ -49,6 +49,8 @@ TolmachWindow::TolmachWindow(BRect frame, int nDict, bool bReverse)
                m_pStatusView(0), m_pDictMenu(0), m_PGBHandler(this),
                m_nDict(nDict), m_bReverse(bReverse),m_tid(-1)
 {
+  //BRect rc = Bounds();
+  //fprintf(stderr, "%f, %f, %f, %f\n", rc.left, rc.top, rc.right, rc.bottom);
   initLayout();
 }
 
@@ -99,22 +101,34 @@ void
 TolmachWindow::initClientView()
 {
     //word edit control
-  BRect rect(cfHorzSpace, cfVertSpace, cfWordsWidth, 0);
-  m_pWordEdit = new BTextControl(rect, "WordEdit",
-				B_TRANSLATE("Word(s):\t"), "", 0, B_FOLLOW_LEFT_RIGHT/*|B_FOLLOW_TOPB_FOLLOW_NONE*/);
+//  BRect rect(cfHorzSpace, cfVertSpace, cfWordsWidth, 0);
+  //m_pWordEdit = new BTextControl(BRect(0,0,1,1)/*rect*/, "WordEdit",
+	//			B_TRANSLATE("Word(s):\t"), "", 0, B_FOLLOW_LEFT_RIGHT/*|B_FOLLOW_TOPB_FOLLOW_NONE*/);
+  m_pWordEdit = new BTextControl(B_TRANSLATE("Word(s):\t"), "", new BMessage(MSG_EDIT_CHANGE));
   //m_pWordEdit = new BTextView(rect, "WordEdit", /*
 	//						B_TRANSLATE("Word(s):"), ""*/rect, 0, B_FOLLOW_NONE);
   //m_pTolmachView->AddChild(m_pWordEdit);
-  m_pWordEdit->ResizeToPreferred();
+//  m_pWordEdit->ResizeToPreferred();
+  //m_pWordEdit->ResizeTo(cfWordsWidth, m_pWordEdit->Bounds().Height());
+
+//  BRect rc = m_pWordEdit->Bounds();
+//  fprintf(stderr, "1:%f, %f, %f, %f / %f\n", rc.left, rc.top, rc.right, rc.bottom, m_pWordEdit->Divider());
+//  rc = m_pWordEdit->TextView()->Bounds();
+//  fprintf(stderr, "2:%f, %f, %f, %f\n", rc.left, rc.top, rc.right, rc.bottom);
 //  m_pWordEdit->SetDivider(0.);
-  m_pWordEdit->SetModificationMessage(new BMessage(MSG_EDIT_CHANGE));
-  float fWordHeight = m_pWordEdit->Bounds().Height();
-  m_pWordEdit->ResizeTo(cfWordsWidth, fWordHeight);
+//  m_pWordEdit->SetModificationMessage(new BMessage(MSG_EDIT_CHANGE));
+//  float fWordHeight = m_pWordEdit->Bounds().Height();
+//  m_pWordEdit->ResizeTo(cfWordsWidth, fWordHeight);
+
+ // rc = m_pWordEdit->Bounds();
+ // fprintf(stderr, "3:%f, %f, %f, %f / %f\n", rc.left, rc.top, rc.right, rc.bottom, m_pWordEdit->Divider());
+ // rc = m_pWordEdit->TextView()->Bounds();
+ // fprintf(stderr, "4:%f, %f, %f, %f\n", rc.left, rc.top, rc.right, rc.bottom);
 
     //words list view
-  rect.Set(0, 0, cfWordsWidth - B_V_SCROLL_BAR_WIDTH, cfWordsHeight);  
-  m_pWordsList = new BListView(rect, "WordsList");
-  m_pWordsList->MoveTo(cfHorzSpace, fWordHeight + cfVertSpace * 2);
+//  rect.Set(0, 0, cfWordsWidth - B_V_SCROLL_BAR_WIDTH, cfWordsHeight);  
+  m_pWordsList = new BListView(BRect(0, 0,  1, 1), "WordsList", B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL);
+//  m_pWordsList->MoveTo(cfHorzSpace, fWordHeight + cfVertSpace * 2);
   m_pWordsListScrollView =
                   new BScrollView("ScrollWords", m_pWordsList,
                                      B_FOLLOW_NONE, 0, false, true);
@@ -124,27 +138,33 @@ TolmachWindow::initClientView()
   m_pWordsList->SetInvocationMessage(new BMessage(MSG_LIST_INVOKE));
 
     //translation text view
-  rect.Set(0, 0, cfWordsWidth - B_V_SCROLL_BAR_WIDTH, cfTransHeight);
-  m_pTransView = new ArticleView(rect, "TransView", rect,
-                                 B_FOLLOW_NONE, B_NAVIGABLE | B_WILL_DRAW);
-  m_pTransView->MoveTo(cfHorzSpace ,
-                       fWordHeight + cfWordsHeight + cfVertSpace * 3);
+//  rect.Set(0, 0, cfWordsWidth - B_V_SCROLL_BAR_WIDTH, cfTransHeight);
+
+  m_pTransView = new ArticleView(BRect(0, 0, 1, 1), "TransView",
+		  BRect(0, 0, Bounds().Width() - B_V_SCROLL_BAR_WIDTH - cfHorzSpace * 2.5f, 1), 
+                                 B_FOLLOW_ALL, B_NAVIGABLE | B_WILL_DRAW);
+//  m_pTransView->MoveTo(cfHorzSpace ,
+//                       fWordHeight + cfWordsHeight + cfVertSpace * 3);
+//  m_pTransView->SetWordWrap(false);
   m_pTransViewScrollView =
                   new BScrollView("TransView", m_pTransView,
-                     B_FOLLOW_LEFT | B_FOLLOW_TOP, 0, true, true);
+                     //B_FOLLOW_LEFT | B_FOLLOW_TOP, 0, true, true);
+                     B_FOLLOW_NONE, 0, false, true);
   //m_pTolmachView->AddChild(pTransScrollView);
-  m_pTransView->MakeEditable(false);
-  ResizeTo(cfWordsWidth + cfHorzSpace * 2,
-             cfTransHeight + fWordHeight + cfWordsHeight +
-                    B_H_SCROLL_BAR_HEIGHT + cfVertSpace * 4);
+  
+//  m_pTransView->MakeEditable(false);
+
+//  ResizeTo(cfWordsWidth + cfHorzSpace * 2,
+ //            cfTransHeight + fWordHeight + cfWordsHeight +
+   //                 B_H_SCROLL_BAR_HEIGHT + cfVertSpace * 4);
 
 
-  m_pWordsListScrollView->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP_BOTTOM);
-  m_pWordsList->SetResizingMode(B_FOLLOW_ALL);
+//  m_pWordsListScrollView->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP_BOTTOM);
+//  m_pWordsList->SetResizingMode(B_FOLLOW_ALL);
 //  m_pWordEdit->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_TOP);
-  m_pTransViewScrollView->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_BOTTOM);
-  m_pTransView->SetResizingMode(B_FOLLOW_ALL);
-  m_pTransView->SetStylable(true);
+//  m_pTransViewScrollView->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_BOTTOM);
+//  m_pTransView->SetResizingMode(B_FOLLOW_ALL);
+//  m_pTransView->SetStylable(true);
   
 }
 
@@ -190,30 +210,34 @@ void TolmachWindow::initLayout()
   //AddChild(m_pTolmachView);
 */
   initClientView();
-  
+
+/*  BBox* divider = new BBox(BRect(0, 0, 1, 1), B_EMPTY_STRING, B_FOLLOW_ALL_SIDES,
+        B_WILL_DRAW | B_FRAME_EVENTS, B_FANCY_BORDER);
+     divider->SetExplicitMaxSize(
+         BSize(B_SIZE_UNLIMITED, 1));
+  */
   m_pStatusView = new BStringView(BRect(0,0,1,1)/*statusFrame*/, "Status View",
                                    B_TRANSLATE("Stattuz"), B_FOLLOW_ALL);
   m_pStatusView->SetViewColor(ui_color(B_MENU_BACKGROUND_COLOR));
 
   BLayoutBuilder::Group<>(this, B_VERTICAL)
 	  .Add(m_pMenuBar)
-	  //.SetInsets(2., 2., 2., 2.)
 	  .AddGrid()
-	    //.Add(new BStringView(BRect(0., 0., 100., 100.), "label", "Word(s):", 0, 0))
-	    //.AddGlue()
 		.AddTextControl(m_pWordEdit, 0, 0)
-	    .SetInsets(10., 0., 10., 0.)
-	  .End()
+	    .SetInsets(cfHorzSpace, 0., cfHorzSpace, 0.)
+	    .End()
 	  .AddGroup(B_VERTICAL)
 	    .AddSplit(B_VERTICAL, 1.0)
 		.Add(m_pWordsListScrollView)
 		.Add(m_pTransViewScrollView)
-	    .SetInsets(5., 0., 5., 0.)
+	    .SetInsets(cfHorzSpace, 0., cfHorzSpace, 0.)
 		.End()
+//	  .Add(divider)
 	  .Add(m_pStatusView)
-	  .End();
+	    .End();
 
   m_pWordEdit->MakeFocus(true);
+
   /*
     // Status view	
   BRect Rect = m_pTolmachView->Frame();
@@ -243,14 +267,16 @@ void TolmachWindow::initLayout()
   float windowWidth = m_pTolmachView->Frame().right;
   float windowHeight = boxFrame.bottom - 4;
   ResizeTo(windowWidth, windowHeight);
-  
-  float fMinW,fMaxW,fMinH,fMaxH;
-  GetSizeLimits(&fMinW,&fMaxW,&fMinH,&fMaxH);
-  fMinW = windowWidth;
-  fMinH = windowHeight;
+ */ 
+  float fMinW = 0.f, fMaxW = 0.f, fMinH = 0.f, fMaxH = 0.f;
+  GetSizeLimits(&fMinW, &fMaxW, &fMinH, &fMaxH);
+//  fMinW = windowWidth;
+//  fMinH = windowHeight;
+  fMinW = Bounds().Width();
+  fMinH = Bounds().Height();
   SetSizeLimits(fMinW, fMaxW, fMinH, fMaxH);
   SetZoomLimits(fMinW, fMaxH);
-  
+/*  
   m_pTolmachView->SetResizingMode(B_FOLLOW_TOP_BOTTOM | B_FOLLOW_LEFT_RIGHT);
   pStatusBox->SetResizingMode(B_FOLLOW_LEFT_RIGHT|B_FOLLOW_BOTTOM);                                 
 */  
@@ -399,8 +425,30 @@ void TolmachWindow::DispatchMessage(BMessage *msg, BHandler *target)
   }
 }
 
+void
+TolmachWindow::FrameResized(float width, float height)
+{
+  BWindow::FrameResized(width, height);
+
+//  BRect rc = m_pTransView->TextRect();
+//  fprintf(stderr, "W:%f, %f, %f, %f\n", rc.left, rc.top, rc.right, rc.bottom);
+
+//  rc. right = rc.left + m_pTransView->Bounds().Width();
+//  m_pTransView->SetTextRect(rc);
+}
+
 void TolmachWindow::HandleWordEditKeyDown(BMessage *message)
 {
+//  BRect rc = m_pWordEdit->Frame();
+ // fprintf(stderr, "1:%f, %f, %f, %f (%f %f) %f\n", rc.left, rc.top, rc.right, rc.bottom, 
+//		  rc.Width(), rc.Height(), m_pWordEdit->Divider());
+//  rc = m_pWordEdit->TextView()->Frame();
+  //fprintf(stderr, "2:%f, %f, %f, %f (%f %f)\n", rc.left, rc.top, rc.right, rc.bottom, 
+	//	  rc.Width(), rc.Height());
+//rc = m_pWordsListScrollView->Frame();
+ // fprintf(stderr, "3:%f, %f, %f, %f (%f %f)\n", rc.left, rc.top, rc.right, rc.bottom, 
+//		  rc.Width(), rc.Height());
+
 	int32 nKey = 0;
 	status_t st = message->FindInt32("raw_char", &nKey);
 	if (B_OK != st) {
@@ -485,6 +533,20 @@ TolmachWindow::ArticleView::ArticleView(BRect frame, const char* name, BRect tex
 						uint32 resizingMode, uint32 flags)
 				: BTextView(frame, name, textRect, resizingMode, flags)
 {
+//  SetWordWrap(false);
+  MakeEditable(false);
+  SetStylable(true);
+}
+
+void
+TolmachWindow::ArticleView::FrameResized(float width, float height)
+{
+//  BRect rc = TextRect();
+//  fprintf(stderr, "%f, %f, %f, %f\n", rc.left, rc.top, rc.right, rc.bottom);
+  //rc.right = rc.left + width;
+  //rc.right++;
+//  SetTextRect(rc);
+  BTextView::FrameResized(width, height);
 }
 
 void TolmachWindow::ArticleView::ResetStyleArray()

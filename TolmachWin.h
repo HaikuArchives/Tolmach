@@ -51,6 +51,7 @@ class TolmachWindow : public BWindow
 		void	ResetStyleArray(); 
 		void	AppendStyleItem(bool bBold, int32 start, int32 length);
 		void	ApplyStyleArray();
+	virtual void FrameResized(float width, float height);
 	};
 
     BMenuBar  *m_pMenuBar;
@@ -88,6 +89,7 @@ class TolmachWindow : public BWindow
     virtual bool QuitRequested();
     virtual void MessageReceived(BMessage *message);
     virtual void DispatchMessage(BMessage *msg, BHandler *target);
+	virtual void FrameResized(float width, float height);
 
     BTextControl*	WordEdit();
     //BTextView*	WordEdit();
