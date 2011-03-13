@@ -62,21 +62,16 @@ class TolmachWindow : public BWindow
 
 	bigtime_t		m_selectWordInListWatchDog;
 
-   // TolmachView*	m_pTolmachView;
     BStatusBar*		m_pProgress;
     BStringView*	m_pStatusView;
     
     BTextControl*	m_pWordEdit;
-    //BTextView*		m_pWordEdit;
     BListView*		m_pWordsList;
-    BScrollView*	m_pWordsListScrollView;
     ArticleView*	m_pTransView;
-	BScrollView*	m_pTransViewScrollView;
 
     PGBHandler m_PGBHandler;
             
     void initMenuBar();
-    void initClientView();
     void initLayout();
 
     void UpdateDictMenu();
@@ -92,18 +87,12 @@ class TolmachWindow : public BWindow
 	virtual void FrameResized(float width, float height);
 
     BTextControl*	WordEdit();
-    //BTextView*	WordEdit();
     BListView*		WordsList();
     ArticleView*	TransView();
 			void    SelectWordInList(int index);
 			
 			void    SetSelectWordInListWatchDog(bigtime_t time);
 			bigtime_t   SelectWordInListWatchDog();
-/*
-			void	ResetStyleArray(); 
-			void	AppendStyleItem(bool bBold, int32 start, int32 length);
-			void	ApplyStyleArray();
-*/			
 };
 
 
