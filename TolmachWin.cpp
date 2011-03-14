@@ -39,6 +39,7 @@ TolmachWindow::TolmachWindow(BRect frame, int nDict, bool bReverse)
                :BWindow(frame, "Tolmach", B_TITLED_WINDOW, 0),
                m_pMenuBar(0), m_pProgress(0),
                m_pStatusView(0), m_pDictMenu(0), m_PGBHandler(this),
+			   m_selectWordInListWatchDog(0),
                m_nDict(nDict), m_bReverse(bReverse),m_tid(-1)
 {
   initLayout();
