@@ -122,7 +122,8 @@ void TolmachWindow::initLayout()
 {
   initMenuBar();
 
-  m_pWordEdit = new BTextControl(B_TRANSLATE("Word(s):\t"), "", new BMessage(MSG_EDIT_CHANGE));
+  m_pWordEdit = new BTextControl(B_TRANSLATE("Word(s):\t"), "", 0);
+  m_pWordEdit->SetModificationMessage(new BMessage(MSG_EDIT_CHANGE));
   m_pWordsList = new BListView(BRect(0, 0,  1, 1), "WordsList", B_SINGLE_SELECTION_LIST, B_FOLLOW_ALL);
 
   m_pWordsList->SetSelectionMessage(new BMessage(MSG_LIST_CHANGE));
