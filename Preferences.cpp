@@ -19,15 +19,10 @@
 
 #include "TolmachApp.h"
 
-#include <Catalog.h>
 #include <File.h>
 #include <FindDirectory.h>
-#include <Locale.h>
 #include <Roster.h>
 #include <unistd.h>
-
-#undef B_TRANSLATE_CONTEXT
-#define B_TRANSLATE_CONTEXT "TolmachPreferences"
 
 const char* const cszPreferencesName = "Tolmach_Preferences";
 const char* const cszWinState = "WinState";

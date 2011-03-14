@@ -18,13 +18,8 @@
  ***************************************************************************/
 #include "PGBHandler.h"
 
-#include <Catalog.h>
-#include <Locale.h>
-
 #include "TolmachApp.h"
 
-#undef B_TRANSLATE_CONTEXT
-#define B_TRANSLATE_CONTEXT "PGBIndex"
 
 PGBHandler::PGBIndex::PGBIndex(BFile &fileDict):m_fileDict(fileDict),m_aIndex(0)
 {

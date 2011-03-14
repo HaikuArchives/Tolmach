@@ -19,9 +19,7 @@
 
 #include "PGBHandler.h"
 
-#include <Catalog.h>
 #include <ListView.h>
-#include <Locale.h>
 #include <MenuBar.h>
 #include <MenuItem.h>
 #include <StringView.h>
@@ -32,9 +30,6 @@
 #include "TolmachApp.h"
 #include "TolmachWin.h"
 #include "Constants.h"
-
-#undef B_TRANSLATE_CONTEXT
-#define B_TRANSLATE_CONTEXT "PGBHandler"
 
 #include "tables.inc" // encode tables
 

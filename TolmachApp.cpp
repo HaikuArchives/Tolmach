@@ -24,11 +24,9 @@
 #include <Alert.h>
 #include <AppFileInfo.h>
 #include <Bitmap.h>
-#include <Catalog.h>
 #include <Directory.h>
 #include <FindDirectory.h>
 #include <KernelExport.h>
-#include <Locale.h>
 #include <Mime.h>
 #include <Resources.h>
 #include <Screen.h>
@@ -37,14 +35,8 @@
 #include "Constants.h"
 #include "TolmachWin.h"
 
-//#define NEW_WINDOW_OFFSET_X 	20
-//#define NEW_WINDOW_OFFSET_Y 	20
-
 const BPoint ptNewWindowOffset(20.f, 20.f);
 const BRect  rcInitBounds(100.f, 80.f, 400.f, 500.f);
-
-#undef B_TRANSLATE_CONTEXT
-#define B_TRANSLATE_CONTEXT "Tolmach"
 
 TolmachApplication  theApp;
 

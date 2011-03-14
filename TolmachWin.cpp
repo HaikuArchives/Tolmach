@@ -21,8 +21,6 @@
 
 #include <Application.h>
 #include <Box.h>
-#include <Catalog.h>
-#include <Locale.h>
 #include <LayoutBuilder.h>
 #include <MenuBar.h>
 #include <MenuItem.h>
@@ -33,9 +31,6 @@
 
 #include "TolmachApp.h"
 #include "Constants.h"
-
-#undef B_TRANSLATE_CONTEXT
-#define B_TRANSLATE_CONTEXT "TolmachWindow"
 
 const float cfVertSpace = 5.f;
 const float cfHorzSpace = 5.f;

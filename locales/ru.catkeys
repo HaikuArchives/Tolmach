@@ -1,36 +1,36 @@
-1	russian	x-vnd.Zyozik-Tolmach	2374802316
- failed to load. :(	PGBHandler		 невозможно загрузить. :(
- words )	PGBHandler		 слов )
-<no dictionaries>	TolmachWindow		<нет словарей>
+1	russian	x-vnd.Zyozik-Tolmach	1624770505
+ failed to load. :(	Tolmach		 невозможно загрузить. :(
+ words )	Tolmach		 слов )
+<no dictionaries>	Tolmach		<нет словарей>
 About Tolmach…	Tolmach		О Программе…
-About…	TolmachWindow		О Программе…
+About…	Tolmach		О Программе…
 Based on 'KDictionary' project.\n	Tolmach		Основан на результатах\nпроекта 'KDictionary'.\n
-Close	TolmachWindow		Закрыть
-Dictionaries	TolmachWindow		Словари
+Close	Tolmach		Закрыть
+Dictionaries	Tolmach		Словари
 Dictionaries directory '%dictsDir%' doesn't exists.	Tolmach		Каталог словарей '%dictsDir%' не существует.
-Dictionary loading failed.	PGBHandler		Не удалось загрузить словарь.
+Dictionary loading failed.	Tolmach		Не удалось загрузить словарь.
 Digged out for BeOS:\tNov.2003-Jan.2004.\n	Tolmach		Разработан для BeOS:\t10/2003-01/2004.\n
-Error	PGBHandler		Ошибка
-Error	PGBIndex		Ошибка
 Error	Tolmach		Ошибка
-Error reading PGB index	PGBIndex		Ошибка чтения индекса PGB
+Error	Tolmach		Ошибка
+Error	Tolmach		Ошибка
+Error reading PGB index	Tolmach		Ошибка чтения индекса PGB
 File %s cannot be processed as dictionary file.\n%s\n	Tolmach		Файл %s не может быть обработан как словарные данные.\n%s\n
 File '%file%' cannot be loaded.	Tolmach		Файл '%file%' не может быть загружен.
-Fill in words list. Please wait ...	PGBHandler		Заполнение списка терминов. Подождите, пожалуйста ...
-Initialize…	PGBHandler		Подготовка…
-Initializing words. Please wait...	PGBHandler		Подготовка терминов. Подождите, пожалуйста...
-Loading words	PGBHandler		Загрузка терминов
-No dictionaries available. =-(	TolmachWindow		Нет доступных словарей. =-(
+Fill in words list. Please wait ...	Tolmach		Заполнение списка терминов. Подождите, пожалуйста ...
+Initialize…	Tolmach		Подготовка…
+Initializing words. Please wait...	Tolmach		Подготовка терминов. Подождите, пожалуйста...
+Loading words	Tolmach		Загрузка терминов
+No dictionaries available. =-(	Tolmach		Нет доступных словарей. =-(
 OK	Tolmach		ОК
-Quit	TolmachWindow		Выйти
+Quit	Tolmach		Выйти
 Renewed for Haiku:\tFeb.2011-Mar.2011.\n\n	Tolmach		Возрождён для Haiku:\t02/2011-03/2011.\n\n
-Stattuz	TolmachWindow		Статус
+Stattuz	Tolmach		Статус
 This application is distributed under the terms of General Public License. Look in sources for more details.\n	Tolmach		Эта программа распространяется с требованиями General Public License. Для подробностей смотрите исходные тексты программы.\n
-Tolmach	TolmachWindow		Переводчик
-Unfortunately, it is not possible to close dictionary windows until finishing of initialization.	TolmachWindow		К сожалению, невозможно закрыть окно этого словаря до завершения процесса загрузки.
-Warning	TolmachWindow		Предупреждение
-Word(s):\t	TolmachWindow		Термин(ы):\t
+Tolmach	Tolmach		Переводчик
+Unfortunately, it is not possible to close dictionary windows until finishing of initialization.	Tolmach		К сожалению, невозможно закрыть окно этого словаря до завершения процесса загрузки.
+Warning	Tolmach		Предупреждение
+Word(s):\t	Tolmach		Термин(ы):\t
 Working shell for language bases in POLYGLOSSUM II (PGB) format.	Tolmach		Оболочка для работы со словарями в формате POLYGLOSSUM II (PGB).
-\nDictionary:	PGBHandler		\nСловарь:
+\nDictionary:	Tolmach		\nСловарь:
 \n\nstatus is: (	Tolmach		\n\nстатус: (
 version	Tolmach		Версия
