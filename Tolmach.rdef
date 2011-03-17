@@ -13,7 +13,7 @@ resource app_version {
 	minor  = 0,
 
 	variety = B_APPV_ALPHA,
-	internal = 0,
+	internal = 1,
 
 	short_info = "Tolmach",
 	long_info = "Working shell for language bases in POLYGLOSSUM II (PGB) format."

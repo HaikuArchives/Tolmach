@@ -1,2 +1,9 @@
+Tolmach:
 4. Memory leaks.
-7.
+8. try to find a vector icon.
+11. more soft loading of the list of words (improve Haiku's ListView per-element update?).
+13. Support for more formatting in the articles (italic).
+14. xxx2pgb convertion utility (Import?).
+15. Special menu and UI for "attributes fix" feature
+16. Extend the dictionaries directories.
+17. 
