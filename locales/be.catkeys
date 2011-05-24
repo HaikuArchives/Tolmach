@@ -1,4 +1,4 @@
-1	belarusian	x.vnd-Zyozik-Tolmach	1624770505
+1	belarusian	x.vnd-Zyozik-Tolmach	3038208698
  failed to load. :(	Tolmach		 немагчыма загрузіць. :(
  words )	Tolmach		 тэрмінаў )
 <no dictionaries>	Tolmach		<няма слоўнікаў>
@@ -11,8 +11,6 @@ Dictionaries directory '%dictsDir%' doesn't exists.	Tolmach		Каталог '%di
 Dictionary loading failed.	Tolmach		Загрузка слоўніка не ўдалася.
 Digged out for BeOS:\tNov.2003-Jan.2004.\n	Tolmach		Распрацаваны для BeOS: 10/2003-02/2004\n
 Error	Tolmach		Памылка
-Error	Tolmach		Памылка
-Error	Tolmach		Памлыка
 Error reading PGB index	Tolmach		Памылка чытання PGB індэксу
 File %s cannot be processed as dictionary file.\n%s\n	Tolmach		Файл %s не можа быць апрацаваны як файл слоўніка.\n%s\n
 File '%file%' cannot be loaded.	Tolmach		Файл '%file%' не можа быць загружаны.
@@ -26,6 +24,7 @@ Quit	Tolmach		Выйсці
 Renewed for Haiku:\tFeb.2011-Mar.2011.\n\n	Tolmach		Адноўлены для Haiku: 02/2011-03/2011\n\n
 Stattuz	Tolmach		Статус
 This application is distributed under the terms of General Public License. Look in sources for more details.\n	Tolmach		Гэтая праграма распаўсюджваецца пад патрабаванні General Public License. Больш падрабязней глядзіце ў зыходны код.\n
+Tolmach	System name		Перакладчык
 Tolmach	Tolmach		Перакладчык
 Unfortunately, it is not possible to close dictionary windows until finishing of initialization.	Tolmach		Нажаль немагчыма закрыць вакно гэтага слоўнікя пакуль не скончылася яго ініцыялізацыя.
 Warning	Tolmach		Папярэджанне

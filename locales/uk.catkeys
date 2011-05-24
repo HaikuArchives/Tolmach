@@ -1,4 +1,4 @@
-1	ukrainian	x-vnd.Zyozik-Tolmach	1624770505
+1	ukrainian	x-vnd.Zyozik-Tolmach	3038208698
  failed to load. :(	Tolmach		 неможливо загрузити. :(
  words )	Tolmach		 слов )
 <no dictionaries>	Tolmach		<нема словників>
@@ -10,8 +10,6 @@ Dictionaries	Tolmach		Словники
 Dictionaries directory '%dictsDir%' doesn't exists.	Tolmach		Каталог словників '%dictsDir%' не існує.
 Dictionary loading failed.	Tolmach		Не удалось загрузить словарь.
 Digged out for BeOS:\tNov.2003-Jan.2004.\n	Tolmach		Розроблений для BeOS:\t10/2003-01/2004.\n
-Error	Tolmach		Помилка
-Error	Tolmach		Помилка
 Error	Tolmach		Помилка
 Error reading PGB index	Tolmach		Помилка при читанні індекса PGB
 File %s cannot be processed as dictionary file.\n%s\n	Tolmach		Файл %s не може бути оброблений як словникові дані.\n%s\n
@@ -26,6 +24,7 @@ Quit	Tolmach		Вийти
 Renewed for Haiku:\tFeb.2011-Mar.2011.\n\n	Tolmach		Відроджений для Haiku:\t02/2011-03/2011.\n\n
 Stattuz	Tolmach		Статус
 This application is distributed under the terms of General Public License. Look in sources for more details.\n	Tolmach		Ця програма поширюється з вимогами General Public License. Для подробиць дивіться вихідні тексти програми.\n
+Tolmach	System name		Переводчик
 Tolmach	Tolmach		Переводчик
 Unfortunately, it is not possible to close dictionary windows until finishing of initialization.	Tolmach		Нажаль, неможливо закрити вікно цього словника до завершення процесу загрузки.
 Warning	Tolmach		Попередження

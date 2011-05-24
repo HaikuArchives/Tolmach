@@ -50,6 +50,8 @@ TolmachApplication::TolmachApplication()
                     :BApplication(cszApplicationSignature),
                     m_rcBounds(rcInitBounds)
 {
+  B_TRANSLATE_MARK_SYSTEM_NAME("Tolmach");
+
   UpdateMIMETypes();
   LoadDictList();
 }
