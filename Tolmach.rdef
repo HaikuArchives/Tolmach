@@ -1,6 +1,8 @@
 
 resource app_signature "application/x-vnd.Zyozik-Tolmach";
 
+resource app_name_catalog_entry "x-vnd.Zyozik-Tolmach:System name:Tolmach";
+
 resource file_types message {
 	"types" = "application/x-Polyglossum-II-base"
 };
