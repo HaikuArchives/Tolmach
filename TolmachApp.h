@@ -25,12 +25,13 @@
 #include <Alert.h>
 #include <Application.h>
 #include <Catalog.h>
+//#include <Locale.h>
 #include <Flattenable.h>
 #include <Path.h>
 #include <String.h>
 
-#undef B_TRANSLATE_CONTEXT
-#define B_TRANSLATE_CONTEXT "Tolmach"
+#undef B_TRANSLATION_CONTEXT
+#define B_TRANSLATION_CONTEXT "Tolmach"
 
 class TolmachWindow;
 
