@@ -421,7 +421,7 @@ void
 TolmachApplication::LoadDictList()
 {
   BPath pathDicts;
-  find_directory(B_COMMON_DATA_DIRECTORY, &pathDicts);
+  find_directory(B_USER_DATA_DIRECTORY, &pathDicts);
   pathDicts.Append(cszDictionariesDir);
   BDirectory dir(pathDicts.Path());
   BEntry entry;
