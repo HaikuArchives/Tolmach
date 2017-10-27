@@ -63,7 +63,7 @@ LOCALES=be ru en uk
 #		and it's name
 #		library: my_lib.a entry: my_lib.a or path/my_lib.a
 #LIBS= root be textencoding locale localestub stdc++
-LIBS= root be textencoding locale localestub $(STDCPPLIBS)
+LIBS= be textencoding localestub $(STDCPPLIBS)
 
 #	specify additional paths to directories following the standard
 #	libXXX.so or libXXX.a naming scheme.  You can specify full paths
